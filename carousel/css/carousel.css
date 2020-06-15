@@ -90,5 +90,15 @@ body {
 }
 
 .slide-color {
-  color: black; 
+  color: white;
+}
+
+.slide-image {
+  filter: brightness(50%);
+
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }

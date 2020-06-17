@@ -31,7 +31,7 @@
 {% endblock %}
 
 {% block content %}
-<link href="{{ url_for('static', filename='styles/form-validation.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/form-validation.css') }}" rel="stylesheet">
 <div class="container">
   <div class="py-5 text-center">
     <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
@@ -200,7 +200,7 @@
   </div>
 </div>
 
-<script src="js/form-validation.js"></script>
+<script src="{{ url_for('static', filename='js/form-validation.js') }}"></script>
 
 <footer class="my-5 pt-5 text-muted text-center text-small">
   <p class="mb-1">&copy; 2020 Good Samaritan</p>

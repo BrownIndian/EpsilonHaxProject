@@ -35,7 +35,7 @@
             <a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="checkout.html">Register</a>
+            <a class="nav-link" href="register.html">Register</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="signin.html">Sign in</a>
@@ -50,7 +50,7 @@
       <nav class="nav nav-underline">
         <a class="nav-link" href="dashboard.html">Dashboard</a>
         <a class="nav-link" href="#">Profile</a>
-        <a class="nav-link active" href="album1.html">Services</a>
+        <a class="nav-link" href="services.html">Services</a>
         <a class="nav-link" href="#">Stats</a>
       </nav>
     </div>
@@ -59,7 +59,7 @@
     <nav class="nav nav-underline">
       <a class="nav-link" href="dashboard.html">Dashboard</a>
       <a class="nav-link active" href="#">Profile</a>
-      <a class="nav-link" href="album1.html">Services</a>
+      <a class="nav-link" href="services.html">Services</a>
       <a class="nav-link" href="#">Stats</a>
     </nav>
   </div>
@@ -79,87 +79,166 @@
             <h5 class="mb-3">User Profile</h5>
             <div class="row">
               <div class="col-md-6">
-                <h6>About</h6>
+                <h6>Name</h6>
                 <p>
-                  Web Designer, UI/UX Engineer
+                  John Brown
                 </p>
-                <h6>Hobbies</h6>
+                <h6>Username</h6>
                 <p>
-                  Indie music, skiing and hiking. I love the great outdoors.
+                  Johnny822
+                </p>
+                <h6>Email</h6>
+                <p>
+                  Johnny822@gmail.com
+                </p>
+                <h6>Payment</h6>
+                <p>
+                  Papypal
+                </p>
+
+                <h6>Preferences</h6>
+                <p>
+                  Electronics, Housing
+                </p>
+              </div>
+              <div class="col-md-6">
+                <h6>Address</h6>
+                <p>
+                  6463 park cmn.
+                </p>
+                <h6>Address 2</h6>
+                <p>
+                  23425 dover cmn.
+                </p>
+                <h6>City</h6>
+                <p>
+                  Fremont
+                </p>
+                <h6>State</h6>
+                <p>
+                  California
+                </p>
+                <h6>Zip</h6>
+                <p>
+                  94536
                 </p>
               </div>
 
 
             </div>
+            <a href="#" class="btn btn-primary my-2" data-toggle="modal" data-target="#preferencesModal">Add Job Preferences</a>
+            <div class="modal fade" id="preferencesModal" tabindex="-1" role="dialog" aria-labelledby="preferencesModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="preferencesModalLabel">Add Job Preferences</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                      <label class="form-check-label" for="defaultCheck1">
+                        Electronics
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+                      <label class="form-check-label" for="defaultCheck2">
+                        House
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+                      <label class="form-check-label" for="defaultCheck3">
+                        Default checkbox
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+                      <label class="form-check-label" for="defaultCheck4">
+                        Default checkbox
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
+                      <label class="form-check-label" for="defaultCheck5">
+                        Default checkbox
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
+                      <label class="form-check-label" for="defaultCheck6">
+                        Default checkbox
+                      </label>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!--/row-->
           </div>
+
 
           <div class="tab-pane" id="edit">
             <form role="form">
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">First name</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="text" value="Jane">
+                  <input class="form-control" type="text" value="John">
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Last name</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="text" value="Bishop">
+                  <input class="form-control" type="text" value="Brown">
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Email</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="email" value="email@gmail.com">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Company</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="text" value="">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Website</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="url" value="">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Address</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="text" value="" placeholder="Street">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label"></label>
-                <div class="col-lg-6">
-                  <input class="form-control" type="text" value="" placeholder="City">
-                </div>
-                <div class="col-lg-3">
-                  <input class="form-control" type="text" value="" placeholder="State">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Time Zone</label>
-                <div class="col-lg-9">
-                  <select id="user_time_zone" class="form-control" size="0">
-                    <option value="Hawaii">(GMT-10:00) Hawaii</option>
-                    <option value="Alaska">(GMT-09:00) Alaska</option>
-                    <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
-                    <option value="Arizona">(GMT-07:00) Arizona</option>
-                    <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
-                    <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
-                    <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
-                    <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
-                  </select>
+                  <input class="form-control" type="email" value="johnny822@gmail.com">
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Username</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="text" value="janeuser">
+                  <input class="form-control" type="text" value="johnny822">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Address</label>
+                <div class="col-lg-9">
+                  <input class="form-control" type="text" value="4687 park cmn." placeholder="">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label"></label>
+                <div class="col-lg-6">
+                  <input class="form-control" type="text" value="Fremont" placeholder="">
+                </div>
+                <div class="col-lg-3">
+                  <input class="form-control" type="text" value="California" placeholder="">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Address 2</label>
+                <div class="col-lg-9">
+                  <input class="form-control" type="text" value="6875 dover cmn." placeholder="">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label"></label>
+                <div class="col-lg-6">
+                  <input class="form-control" type="text" value="Fremont" placeholder="">
+                </div>
+                <div class="col-lg-3">
+                  <input class="form-control" type="text" value="California" placeholder="">
                 </div>
               </div>
               <div class="form-group row">
@@ -174,6 +253,7 @@
                   <input class="form-control" type="password" value="11111122333">
                 </div>
               </div>
+
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label"></label>
                 <div class="col-lg-9">

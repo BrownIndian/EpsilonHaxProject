@@ -3,13 +3,15 @@
 <!doctype html>
 <html lang="en">
 
-
 {% block head %}
 {% for mess in get_flashed_messages() %}
 <div class="alert alert-danger" role="alert">
   One or more of your fields is not invalid. Please follow the field instructions and submit again.
 </div>
 {% endfor %}
+
+
+
 
 <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/checkout/">
 
@@ -76,12 +78,12 @@
           <label for="username">Username</label>
           <div class="input-group">
 
-            {{form.username(class_="form-control", placeholder="must be between 4 and 15 characters")}}
+            {{form.uname(class_="form-control", placeholder="must be between 4 and 15 characters")}}
             <div class="invalid-feedback" style="width: 100%;">
               Your username is required.
             </div>
           </div>
-        </div>
+        </div> 
 
         <div class="mb-3">
           <!-- <label for="email">Email</label>

@@ -11,6 +11,7 @@ auth = Fire().init_auth()
 db = Fire().init_db()
 '''
 
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')

@@ -1,12 +1,14 @@
-from flask import Flask, render_template, session, redirect, request, url_for
+from flask import Flask, render_template, session, redirect, request, url_for, flash
 from forms import RegisterForm, LoginForm
 from manager import Fire
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "asd2345khkgkjf7saiyd"
 
+
 auth = Fire().init_auth()
 db = Fire().init_db()
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -18,8 +20,12 @@ def register():
     if form.validate_on_submit():
         session['email'] = form.email.data
         session['password'] = form.password.data
+
         auth.create_user_with_email_and_password(session['email'], session['password'])
         auth.sign_in_with_email_and_password(session['email'], session['password'])
+
+    else:
+        flash('One or more of your fields is not invalid. Please follow the field instructions and submit again.')
 
         print(auth.current_user)
         if auth.current_user != None:
@@ -36,12 +42,12 @@ def register():
                 u'expiration': form.expiration.data,
                 u'cvv': form.cvv.data
             })
- 
+
             print("Successfully written to database")
 
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
-    
+
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -57,4 +63,3 @@ def signin():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    

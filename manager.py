@@ -5,7 +5,7 @@ import pyrebase
 
 class Fire():
     def __init__(self):
-        self.pyreauth =  Fire.__init_auth(self)
+        self.pyreauth = Fire.__init_auth(self)
         self.db = Fire.__init_db(self)
 
     def __init_auth(self):  

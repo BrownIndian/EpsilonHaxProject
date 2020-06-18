@@ -4,10 +4,6 @@ from firebase_admin import firestore
 import pyrebase
 
 class Fire():
-    def __init__(self):
-        self.auth = Fire.init_auth(self)
-        self.db = Fire.init_db(self)
-
     def init_auth(self):  
         firebaseConfig = {
             'apiKey': "AIzaSyAopjFhQL0sG7DqIZpxSOf1NyE5pgK5Y7Y",
@@ -26,10 +22,3 @@ class Fire():
         cred = credentials.Certificate("/Users/akshaykumar/Documents/Projects/FlaskLearning/db_example/key.json")
         firebase_admin.initialize_app(cred)
         return firestore.client()
-
-    def create_user(self, email, password):
-        self.auth.create_user_with_email_and_password(email, password)
-        return self.auth.sign_in_with_email_and_password(email, password)
-
-    def login(self, email, password):
-        return self.auth.sign_in_with_email_and_password(email, password)

@@ -5,6 +5,12 @@
 
 
 {% block head %}
+{% for mess in get_flashed_messages() %}
+<div class="alert alert-danger" role="alert">
+  One or more of your fields is not invalid. Please follow the field instructions and submit again.
+</div>
+{% endfor %}
+
 <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/checkout/">
 
 <!-- Bootstrap core CSS -->
@@ -43,9 +49,9 @@
 
     <div class="col-md-12 order-md-1">
 
-      <form class="needs-validation" method="POST" novalidate>
+      <form method="POST" class="needs-validation" novalidate>
         {{form.hidden_tag()}}
-        
+
         <div class="row">
           <div class="col-md-6 mb-3">
             <!-- <label for="firstName">First name</label>
@@ -63,34 +69,44 @@
               Valid last name is required.
             </div>
           </div>
+
         </div>
 
-        <!-- <div class="mb-3">
+        <div class="mb-3">
           <label for="username">Username</label>
           <div class="input-group">
 
-            <input type="text" class="form-control" id="username" placeholder="Username" required>
+            {{form.username(class_="form-control", placeholder="must be between 4 and 15 characters")}}
             <div class="invalid-feedback" style="width: 100%;">
               Your username is required.
             </div>
           </div>
-        </div> -->
+        </div>
 
         <div class="mb-3">
           <!-- <label for="email">Email</label>
           <input type="email" class="form-control" id="email" placeholder="you@example.com"> -->
-          {{form.email.label}} {{form.email(class_="form-control")}}
+          {{form.email.label}} {{form.email(class_="form-control", placeholder="name@example.com")}}
           <div class="invalid-feedback">
-            Please enter a valid email address for shipping updates.
+            Please enter a valid email address.
           </div>
         </div>
 
         <div class="mb-3">
           <!-- <label for="password">Password</label>
           <input type="password" class="form-control" id="password" placeholder="password"> -->
-          {{form.password.label}} {{form.password(class_="form-control")}}
+          {{form.password.label}} {{form.password(class_="form-control", placeholder="must be between 4 and 15 characters")}}
           <div class="invalid-feedback">
-            Please enter a valid email address for shipping updates.
+            Please enter a password between 4 and 15 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <!-- <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="password"> -->
+          {{form.confirmpassword.label}} {{form.confirmpassword(class_="form-control")}}
+          <div class="invalid-feedback">
+            Must match Password field.
           </div>
         </div>
 
@@ -154,11 +170,11 @@
         <hr class="mb-4"> -->
 
         <h4 class="mb-3">Payment</h4>
-        
+
         <div class="d-block my-3">
           {{form.card_type.label}} {{form.card_type(class_="custom-select d-block w-100")}}
-          <!-- <div class="custom-control custom-radio"> 
-            
+          <!-- <div class="custom-control custom-radio">
+
             <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
             <label class="custom-control-label" for="credit">Credit card</label>
           </div>
@@ -206,9 +222,9 @@
             <div class="invalid-feedback">
               Security code required
             </div>
-            
+
           </div>
-          
+
         </div>
         <hr class="mb-4">
           {{form.submit(class_="btn btn-danger btn-lg btn-block")}}

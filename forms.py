@@ -1,10 +1,10 @@
-from flask import Flask,render_template, session, redirect, flash
+from flask import Flask,render_template, session, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, DateField, IntegerField, SelectField, RadioField
 from wtforms.validators import InputRequired, Email, EqualTo, Length
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators = [InputRequired()])
+    email = StringField('Email', validators = [InputRequired(), Email()])
     password = PasswordField('Password', validators=[InputRequired()])
     submit = SubmitField('Submit')
 

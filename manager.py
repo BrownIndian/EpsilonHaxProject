@@ -1,10 +1,11 @@
+'''
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 import pyrebase
 
 class Fire():
-    def init_auth(self):  
+    def init_auth(self):
         firebaseConfig = {
             'apiKey': "AIzaSyAopjFhQL0sG7DqIZpxSOf1NyE5pgK5Y7Y",
             'authDomain': "python-practice-c2a44.firebaseapp.com",
@@ -22,3 +23,4 @@ class Fire():
         cred = credentials.Certificate("/Users/akshaykumar/Documents/Projects/FlaskLearning/db_example/key.json")
         firebase_admin.initialize_app(cred)
         return firestore.client()
+'''

@@ -1,14 +1,13 @@
 from flask import Flask, render_template, session, redirect, request, url_for, flash
 from forms import RegisterForm, LoginForm
 from manager import Fire
-import requests
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "asd2345khkgkjf7saiyd"
 
-fb = Fire()
-auth = fb.pyreauth
-db = fb.db
+
+auth = Fire().init_auth()
+db = Fire().init_db()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -21,34 +20,30 @@ def register():
     if form.validate_on_submit():
         session['email'] = form.email.data
         session['password'] = form.password.data
-        session['uname'] = form.uname.data
 
-        if auth.current_user == None: 
-            if fb.existing_data(u'uname', form.uname.data):
-                print("Username is already taken") # Send to user
-                return redirect(url_for('register'))
-            else:
-                if fb.existing_data(u'email', form.email.data):
-                    fb.create_user(session['email'],session['password'])
-                else:
-                    return redirect(url_for('register'))
-                    
-                user = auth.current_user
-                user['displayName'] = form.uname.data
+        auth.create_user_with_email_and_password(session['email'], session['password'])
+        auth.sign_in_with_email_and_password(session['email'], session['password'])
 
-                doc_ref = db.collection(u'users').document(user['displayName'])
-                doc_ref.set({
+    else:
+        flash('One or more of your fields is not invalid. Please follow the field instructions and submit again.')
+
+        print(auth.current_user)
+        if auth.current_user != None:
+            user = auth.current_user
+            doc_ref = db.collection(u'users').document(u'pensis')
+            doc_ref.set({
                 u'fname': form.fname.data,
                 u'lname': form.lname.data,
-                u'uname': form.uname.data,
                 u'address': form.address.data,
                 u'state': form.state.data,
                 u'card_t': form.card_type.data,
                 u'card_name': form.card_name.data,
                 u'card_number': form.card_num.data,
                 u'expiration': form.expiration.data,
-                u'cvv': form.cvv.data,
+                u'cvv': form.cvv.data
             })
+
+            print("Successfully written to database")
 
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
@@ -61,12 +56,7 @@ def signin():
         session['email'] = form.email.data
         session['password'] = form.password.data
         if auth.current_user == None:
-            try:
-                fb.login_user(session['email'],session['password'])
-            except requests.exceptions.HTTPError:
-                print("You have mispelled your email and/or password") #Send to user
-            finally:
-                return redirect(url_for('signin'))
+            user = auth.sign_in_with_email_and_password(session['email'],session['password'])
             return redirect(url_for('index'))
     return render_template('signin.html', form=form)
 

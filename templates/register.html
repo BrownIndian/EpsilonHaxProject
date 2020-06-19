@@ -41,7 +41,7 @@
     <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
 
     <h2>Registration Form</h2>
-    
+
   </div>
   {% for mess in get_flashed_messages() %}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -61,6 +61,11 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             {{form.fname.label}} {{form.fname(class_="form-control")}}
+            {% for error in form.fname.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span style="color: red;">[{{ error }}]</span>
+              </div>
+            {%endfor%}
             <div class="invalid-feedback">
               Valid first name is required.
             </div>
@@ -68,6 +73,11 @@
           <div class="col-md-6 mb-3">
 
             {{form.lname.label}} {{form.lname(class_="form-control")}}
+            {% for error in form.lname.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span style="color: red;">[{{ error }}]</span>
+              </div>
+            {%endfor%}
             <div class="invalid-feedback">
               Valid last name is required.
             </div>
@@ -80,6 +90,11 @@
           <div class="input-group">
 
             {{form.uname(class_="form-control", placeholder="must be between 4 and 15 characters")}}
+            {% for error in form.uname.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span style="color: red;">Invalid username!</span>
+              </div>
+            {%endfor%}
             <div class="invalid-feedback" style="width: 100%;">
               Your username is required.
             </div>
@@ -88,6 +103,11 @@
 
         <div class="mb-3">
           {{form.email.label}} {{form.email(class_="form-control", placeholder="name@example.com")}}
+          {% for error in form.email.errors %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <span style="color: red;">Invalid email!</span>
+            </div>
+          {%endfor%}
           <div class="invalid-feedback">
             Please enter a valid email address.
           </div>
@@ -95,6 +115,11 @@
 
         <div class="mb-3">
           {{form.password.label}} {{form.password(class_="form-control", placeholder="must be between 4 and 15 characters")}}
+          {% for error in form.password.errors %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <span style="color: red;">Invalid password or passwords do not match!</span>
+            </div>
+          {%endfor%}
           <div class="invalid-feedback">
             Please enter a password between 4 and 15 characters.
           </div>
@@ -102,6 +127,11 @@
 
         <div class="mb-3">
           {{form.confirmpassword.label}} {{form.confirmpassword(class_="form-control")}}
+          {% for error in form.password.errors %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <span style="color: red;">Invalid password or passwords do not match!</span>
+            </div>
+          {%endfor%}
           <div class="invalid-feedback">
             Must match Password field.
           </div>
@@ -109,6 +139,11 @@
 
         <div class="mb-3">
           {{form.address.label}} {{form.address(class_="form-control")}}
+          {% for error in form.address.errors %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <span style="color: red;">Invalid address!</span>
+            </div>
+          {%endfor%}
           <div class="invalid-feedback">
             Please enter your shipping address.
           </div>
@@ -127,6 +162,11 @@
           <div class="col-md-3 mb-3">
 
             {{form.zipcode.label}} {{form.zipcode(class_="form-control")}}
+            {% for error in form.zipcode.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span style="color: red;">Invalid zipcode!</span>
+              </div>
+            {%endfor%}
             <div class="invalid-feedback">
               Zip code required.
             </div>
@@ -139,12 +179,17 @@
 
         <div class="d-block my-3">
           {{form.card_type.label}} {{form.card_type(class_="custom-select d-block w-100")}}
-      
+
         </div>
         <div class="row">
           <div class="col-md-6 mb-3">
 
             {{form.card_name.label}} {{form.card_name(class_="form-control")}}
+            {% for error in form.card_name.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span style="color: red;">Enter a card name!</span>
+              </div>
+            {%endfor%}
             <small class="text-muted">Full name as displayed on card</small>
             <div class="invalid-feedback">
               Name on card is required
@@ -152,6 +197,11 @@
           </div>
           <div class="col-md-6 mb-3">
             {{form.card_num.label}} {{form.card_num(class_="form-control")}}
+            {% for error in form.card_num.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span style="color: red;">Invalid card number!</span>
+              </div>
+            {%endfor%}
 
             <div class="invalid-feedback">
               Credit card number is required
@@ -162,6 +212,11 @@
           <div class="col-md-3 mb-3">
 
             {{form.expiration.label}} {{form.expiration(class_="form-control")}}
+            {% for error in form.expiration.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span style="color: red;">Invalid expiration date!</span>
+              </div>
+            {%endfor%}
             <div class="invalid-feedback">
               Expiration date required
             </div>
@@ -169,6 +224,11 @@
           <div class="col-md-3 mb-3">
 
             {{form.cvv.label}} {{form.cvv(class_="form-control")}}
+            {% for error in form.cvv.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span style="color: red;">Invalid CVV!</span>
+              </div>
+            {%endfor%}
             <div class="invalid-feedback">
               Security code required
             </div>
@@ -179,7 +239,7 @@
         <hr class="mb-4">
 
           {{form.submit(class_="btn btn-danger btn-lg btn-block")}}
- 
+
       </form>
     </div>
   </div>

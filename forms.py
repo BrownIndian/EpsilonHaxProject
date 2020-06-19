@@ -1,7 +1,8 @@
 from flask import Flask,render_template, session, redirect, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, DateField, IntegerField, SelectField, RadioField
-from wtforms.validators import InputRequired, Email, EqualTo, Length
+from wtforms.validators import InputRequired, Email, EqualTo, Length, DataRequired
+from wtforms.widgets import TextArea
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators = [InputRequired(), Email()])
@@ -25,4 +26,8 @@ class RegisterForm(FlaskForm):
     cvv = StringField('CVV', validators=[InputRequired()])
     submit = SubmitField('Submit')
 
-    '''cred, confpass, add flashes, specify lenght (where needed)'''
+class TaskForm(FlaskForm):
+    title = StringField('Title', validators=[InputRequired()])
+    description = StringField('Description', widget=TextArea(), validators=[InputRequired()])
+    reward = StringField('Reward', validators=[InputRequired()])
+    submit = SubmitField('Submit')

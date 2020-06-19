@@ -1,6 +1,6 @@
 from flask import Flask,render_template, session, redirect, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, DateField, IntegerField, SelectField, RadioField
+from wtforms import StringField, SubmitField, PasswordField, DateField, IntegerField, SelectField, RadioField, BooleanField
 from wtforms.validators import InputRequired, Email, EqualTo, Length, DataRequired
 from wtforms.widgets import TextArea
 
@@ -31,3 +31,25 @@ class TaskForm(FlaskForm):
     description = StringField('Description', widget=TextArea(), validators=[InputRequired()])
     reward = StringField('Reward', validators=[InputRequired()])
     submit = SubmitField('Submit')
+
+class UpdateInfoForm(FlaskForm):
+    address = StringField('Address', validators=[InputRequired()])
+    state = SelectField('State', choices=[('CA', 'California'), ('NY', 'New York'), ('TX', 'Texas')], validators=[InputRequired()])
+    zipcode = StringField('Zip', validators=[InputRequired(), Length(min=5, max=5)])
+    password = PasswordField('Password', validators=[InputRequired(), EqualTo('confirmpassword'), Length(min=4, max=15)])
+    confirmpassword = PasswordField('Confirm Password', validators=[InputRequired()])
+    card_type = SelectField('Card Type', choices=[('v', 'Visa'), ('m', 'MasterCard')], validators=[InputRequired()])
+    card_name = StringField('Name on Card', validators=[InputRequired()])
+    card_num = StringField('Number on Card', validators=[InputRequired()])
+    expiration = StringField('Date', validators=[InputRequired()])
+    cvv = StringField('CVV', validators=[InputRequired()])
+    submit = SubmitField('Submit')
+
+class PreferencesForm(FlaskForm):
+    tech = BooleanField("Technology", description="Technology")
+    gardening = BooleanField("Gardening", description="Gardening")
+    cleaning = BooleanField("Cleaning", description="Cleaning")
+    submit = SubmitField('Submit')
+
+    def ptype(self):
+        return (self.tech, self.gardening, self.cleaning)

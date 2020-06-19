@@ -4,6 +4,7 @@ from wtforms import StringField, SubmitField, PasswordField, DateField, IntegerF
 from wtforms.validators import InputRequired, Email, EqualTo, Length, DataRequired
 from wtforms.widgets import TextArea
 
+#TRY TO IMPLEMENT MESSAGES ERROR SYSTEM
 class LoginForm(FlaskForm):
     email = StringField('Email', validators = [InputRequired(), Email()])
     password = PasswordField('Password', validators=[InputRequired()])
@@ -53,3 +54,6 @@ class PreferencesForm(FlaskForm):
 
     def ptype(self):
         return (self.tech, self.gardening, self.cleaning)
+
+class SignOut(FlaskForm):
+    submit = SubmitField('Sign Out')

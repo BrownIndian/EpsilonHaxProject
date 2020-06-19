@@ -48,6 +48,9 @@ class Fire():
         doc = self.db.collection(u'users').document(uname).get()
         return doc.to_dict()
 
+    def sign_out_user(self):
+        self.pyreauth.current_user = None
+
 
 class Utility():
     def num_remover(self, input):

@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     fname = StringField('First Name', validators=[InputRequired()])
     lname = StringField('Last Name', validators=[InputRequired()])
-    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
+    uname = StringField('Username', validators=[InputRequired(), Length(min=1, max=15)])
     address = StringField('Address', validators=[InputRequired()])
     state = SelectField('State', choices=[('CA', 'California'), ('NY', 'New York'), ('TX', 'Texas')], validators=[InputRequired()])
     zipcode = StringField('Zip', validators=[InputRequired(), Length(min=5, max=5)])

@@ -7,7 +7,6 @@ class Fire():
     def __init__(self):
         self.pyreauth = Fire.init_auth(self)
         self.db = Fire.init_db(self)
-        self.tool = Utility()
 
     def init_auth(self):
         firebaseConfig = {
@@ -39,18 +38,7 @@ class Fire():
         item = 0
         docs = self.db.collection(u'users').where(check, u'==', data).stream()
         for doc in docs : item +=1
+        print(item)
         return False if item == 0 else True
 
-    def is_user_loggedIn(self):
-        return self.pyreauth.current_user != None
 
-    def get_user_info(self, uname):
-        doc = self.db.collection(u'users').document(uname).get()
-        return doc.to_dict()
-
-
-class Utility():
-    def num_remover(self, input):
-        if input[0].isdigit():
-            return input[1:]
-        return input

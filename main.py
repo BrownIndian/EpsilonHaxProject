@@ -1,11 +1,12 @@
 from flask import Flask, render_template, session, redirect, request, url_for, flash
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm, LoginForm, TaskForm
 from manager import Fire
 import requests
 
 fb = Fire()
 auth = fb.pyreauth
 db = fb.db
+tool = fb.tool
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "asd2345khkgkjf7saiyd"
@@ -16,9 +17,27 @@ app.config['SECRET_KEY'] = "asd2345khkgkjf7saiyd"
 def index():
     return render_template('index.html')
 
-@app.route('/services')
+@app.route('/services', methods=['GET', 'POST'])
 def services():
-   return render_template('services.html')
+    form = TaskForm()
+    doc_ref = db.collection(u'tasks').stream()
+
+    if form.validate_on_submit():
+        session['title'] = form.title.data
+        session['description'] = form.description.data
+        session['reward'] = form.reward.data
+        
+        doc_ref = db.collection(u'tasks').document()
+        doc_ref.set({
+            u'title': form.title.data,
+            u'description': form.description.data,
+            u'reward': form.reward.data,
+         })
+
+        
+    
+        return redirect(url_for('services'))
+    return render_template('services.html', form=form, dox = doc_ref, tool=tool)
 
 @app.route('/stats')
 def stats():
@@ -30,7 +49,10 @@ def dashboard():
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    return render_template('profile.html')
+    print(auth.current_user)
+    user_info = fb.get_user_info(session['uname'])
+    print(user_info['fname'])
+    return render_template('profile.html', user_info=user_info)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -61,15 +83,17 @@ def register():
                     u'fname': form.fname.data,
                     u'lname': form.lname.data,
                     u'uname': form.uname.data,
+                    u'email': form.email.data,
                     u'address': form.address.data,
                     u'state': form.state.data,
                     u'card_t': form.card_type.data,
                     u'card_name': form.card_name.data,
                     u'card_number': form.card_num.data,
                     u'expiration': form.expiration.data,
+                    u'zipcode': form.zipcode.data,
                     u'cvv': form.cvv.data })
 
-                    return redirect(url_for('index'))
+                    return redirect(url_for('profile'))
                 else:
                     flash('This email already exists within our database')
                     return render_template('register.html', form=form)
@@ -88,14 +112,13 @@ def signin():
         session['email'] = form.email.data
         session['password'] = form.password.data
 
-        print(f"{auth.current_user} sfhasflkfhsa klhsdkffkdsjk skfdhkfh hjd f" )
         if auth.current_user == None:
             try:
                 fb.login_user(session['email'],session['password'])
             except requests.exceptions.HTTPError:
                 flash("You have mispelled your email and/or password")
-
-            return redirect(url_for('index'))
+                return render_template('signin.html', form=form)
+            return redirect(url_for('dashboard'))
     return render_template('signin.html', form=form)
 
 if __name__ == '__main__':

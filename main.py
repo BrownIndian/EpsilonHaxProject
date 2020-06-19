@@ -47,9 +47,7 @@ def profile():
         return redirect(url_for("profile"))
         
     else:
-        for fieldName, errorMessages in form.errors.items():
-            for err in errorMessages:
-                print(err)
+        
     return render_template('profile.html', user_info=user_info, form=update_form, pform = preferences_form)
 
 @app.route('/', methods=['GET', 'POST'])

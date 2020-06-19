@@ -83,3 +83,16 @@ body {
 .title {
   background-color: #ffd3b6;
 }
+
+.date {
+  padding-top: 5px;
+  padding-bottom: 5px
+}
+
+#msg {
+  text-align: center;
+}
+
+.pad {
+  margin-right: 30px;
+}

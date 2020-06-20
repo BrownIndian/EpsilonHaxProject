@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session, redirect, request, url_for, flash
-from forms import RegisterForm, LoginForm, TaskForm
+from forms import RegisterForm, LoginForm, TaskForm, PreferencesForm, UpdateInfoForm, SignOut
 from manager import Fire
 import requests
 
@@ -11,15 +11,59 @@ tool = fb.tool
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "asd2345khkgkjf7saiyd"
 
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    update_form = UpdateInfoForm()
+    preferences_form = PreferencesForm()
+    signout = SignOut()
+    print(f"This is the current user: {auth.current_user}") 
+    user = auth.current_user
+    user_info = fb.get_user_info(user['localId'])
+    doc_ref = db.collection(u'users').document(user['localId'])
 
+    if update_form.validate_on_submit() and update_form.submit.data:
+        doc_ref.update(
+        {
+        u'address': update_form.address.data,
+        u'zipcode': update_form.zipcode.data,
+        u'state': update_form.state.data,
+        u'card_name': update_form.card_name.data,
+        u'card_type': update_form.card_type.data,
+        u'card_num': update_form.card_num.data})
+        return redirect(url_for("dashboard")) #pls change
+
+    elif preferences_form.validate_on_submit() and preferences_form.submit.data:
+        print("Preferences are validated")
+
+        #MAKE THIS BLOCK INTO A TOOL FUNCTION
+        prefs = []
+        for pref in preferences_form.ptype():
+            if pref.data:
+                prefs.append(pref.description)
+        if len(prefs) == 0:
+            prefs.append('None')
+        else:
+            doc_ref.update({u'preferences': prefs})
+        return redirect(url_for("profile"))
+        
+    else:
+        for fieldName, errorMessages in update_form.errors.items():
+            for err in errorMessages:
+                print(err)
+    return render_template('profile.html', user_info=user_info, form=update_form, pform = preferences_form, is_logged_in = fb.is_user_loggedIn(), signout_form=signout)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    signout = SignOut()
+    if request.method == "POST":
+        fb.sign_out_user()
+        return redirect(url_for('index'))
+    return render_template('index.html', is_logged_in = fb.is_user_loggedIn(), signout_form=signout)
 
 @app.route('/services', methods=['GET', 'POST'])
 def services():
     form = TaskForm()
+    signout = SignOut()
     doc_ref = db.collection(u'tasks').stream()
 
     if form.validate_on_submit():
@@ -34,25 +78,18 @@ def services():
             u'reward': form.reward.data,
          })
 
-        
-    
         return redirect(url_for('services'))
-    return render_template('services.html', form=form, dox = doc_ref, tool=tool)
+    return render_template('services.html', form=form, dox = doc_ref, tool=tool, is_logged_in = fb.is_user_loggedIn(), signout_form=signout)
 
 @app.route('/stats')
 def stats():
-   return render_template('stats.html')
+    signout = SignOut()
+    return render_template('stats.html', signout_form=signout)
 
 @app.route('/dashboard')
 def dashboard():
-   return render_template('dashboard.html')
-
-@app.route('/profile', methods=['GET', 'POST'])
-def profile():
-    print(auth.current_user)
-    user_info = fb.get_user_info(session['uname'])
-    print(user_info['fname'])
-    return render_template('profile.html', user_info=user_info)
+    signout = SignOut()
+    return render_template('dashboard.html', is_logged_in = fb.is_user_loggedIn(), signout_form=signout)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -75,10 +112,9 @@ def register():
                     print(form.email.data)
                     fb.create_user(session['email'],session['password'])
                     user = auth.current_user
-                    user['displayName'] = form.uname.data
                     flash('Thank you for creating an account with us!')
 
-                    doc_ref = db.collection(u'users').document(user['displayName'])
+                    doc_ref = db.collection(u'users').document(user['localId'])
                     doc_ref.set({
                     u'fname': form.fname.data,
                     u'lname': form.lname.data,
@@ -86,12 +122,14 @@ def register():
                     u'email': form.email.data,
                     u'address': form.address.data,
                     u'state': form.state.data,
-                    u'card_t': form.card_type.data,
+                    u'card_type': form.card_type.data,
                     u'card_name': form.card_name.data,
-                    u'card_number': form.card_num.data,
+                    u'card_num': form.card_num.data,
                     u'expiration': form.expiration.data,
                     u'zipcode': form.zipcode.data,
-                    u'cvv': form.cvv.data })
+                    u'cvv': form.cvv.data,
+                    u'preferences': ['None']
+                    })
 
                     return redirect(url_for('profile'))
                 else:
@@ -102,7 +140,7 @@ def register():
     else:
         if request.method =="POST":
             flash('You have made mistakes within the form, please fix them!')
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, is_logged_in = fb.is_user_loggedIn())
 
 
 @app.route('/signin', methods=['GET', 'POST'])
@@ -119,7 +157,7 @@ def signin():
                 flash("You have mispelled your email and/or password")
                 return render_template('signin.html', form=form)
             return redirect(url_for('dashboard'))
-    return render_template('signin.html', form=form)
+    return render_template('signin.html', form=form, is_logged_in = fb.is_user_loggedIn())
 
 if __name__ == '__main__':
     app.run(debug=True)

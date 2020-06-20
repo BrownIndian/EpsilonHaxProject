@@ -32,18 +32,26 @@
               <li class="nav-item active">
                 <a class="nav-link" href="{{url_for('index')}}">Home<span class="sr-only">(current)</span></a>
               </li>
+              {% if not is_logged_in %}
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('register')}}">Register</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('signin')}}">Sign in</a>
               </li>
+              {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('dashboard')}}">Dashboard</a>
               </li>
+                <form class="form-inline my-2 my-lg-0" action="{{url_for('index')}}" method="POST">
+                  <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Out</button> -->
+                  {{signout_form.submit(class_="btn btn-outline-success my-2 my-sm-0")}}
+                </form>
+              {% endif %}
             </ul>
           </div>
         </nav>
+        <!-- PLEASE FIX THIS DOUBLE NAV BAR THINGY -->
         <div class="align nav-scroller bg-white shadow-sm">
             <nav class="nav nav-underline">
               <a class="nav-link" href="{{url_for('dashboard')}}">Dashboard</a>

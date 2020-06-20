@@ -34,16 +34,8 @@ def profile():
 
     elif preferences_form.validate_on_submit() and preferences_form.submit.data:
         print("Preferences are validated")
-
-        #MAKE THIS BLOCK INTO A TOOL FUNCTION
-        prefs = []
-        for pref in preferences_form.ptype():
-            if pref.data:
-                prefs.append(pref.description)
-        if len(prefs) == 0:
-            prefs.append('None')
-        else:
-            doc_ref.update({u'preferences': prefs})
+        prefs = preferences_form.getPreferences()
+        doc_ref.update({u'preferences': prefs})
         return redirect(url_for("profile"))
         
     else:
@@ -139,6 +131,9 @@ def register():
             return redirect(url_for('index'))
     else:
         if request.method =="POST":
+            for fieldName, errorMessages in form.errors.items():
+                for err in errorMessages:
+                    flash(err)
             flash('You have made mistakes within the form, please fix them!')
     return render_template('register.html', form=form, is_logged_in = fb.is_user_loggedIn())
 

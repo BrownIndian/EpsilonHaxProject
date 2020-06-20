@@ -28,7 +28,14 @@
 
 {% block content %}
 <main role="main">
-
+  {% for mess in get_flashed_messages() %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>{{mess}}</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+  {% endfor %}
   <section class="title jumbotron text-center">
     <div class="container">
       <h1>Service Hub</h1>
@@ -54,16 +61,10 @@
                   <h1 class="h3 mb-3 font-weight-bold">Service Details</h1>
                   {{form.hidden_tag()}}
                   {{form.title.label}} {{form.title(class_="form-control")}}
-                  <!-- <input class="form-control" type="text" placeholder="Title">
-                  <label for="exampleFormControlTextarea1"></label> -->
                   {{form.description.label}} {{form.description(class_="form-control", rows="3")}}
-                  <!-- <textarea class="form-control" placeholder="Description" id="exampleFormControlTextarea1" rows="3"></textarea>
-                  <label for="exampleFormControlTextarea1"></label> -->
-                  <!-- <input class="form-control" type="number" placeholder="Reward"> -->
                   {{form.reward.label}} {{form.reward(class_="form-control")}}
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
                    {{form.submit(class_="btn btn-primary")}}
                   </div>
                 </form>
@@ -94,36 +95,43 @@
               <p class="card-text">{{doc.to_dict()['description']}}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#{{tool.num_remover(doc.id)}}Modal">View</button>
-                  <div class="modal fade" id="{{tool.num_remover(doc.id)}}Modal" tabindex="-1" role="dialog" aria-labelledby="{{tool.num_remover(doc.id)}}ModalLabel" aria-hidden="true">
+                  <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#s{{doc.id}}Modal">View</button>
+                  <div class="modal fade" id="s{{doc.id}}Modal" tabindex="-1" role="dialog" aria-labelledby="s{{doc.id}}ModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="{{tool.num_remover(doc.id)}}ModalLabel">Ask for a Service</h5>
+                          <h5 class="modal-title" id="s{{doc.id}}ModalLabel">Ask for a Service</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <div class="modal-body">
-                          <div class="card mb-4 shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
-                              <title>Placeholder</title>
-                              <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                            </svg>
-                            <div class="card-body">
-                              <p class="card-text">{{doc.to_dict()['title']}}</p>
-                              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                              <div class="d-flex justify-content-between align-items-center">
-
-                              <small class="text-muted">Reward</small>
+                        <form action="" method="POST">
+                          {{acc_ser.hidden_tag()}}
+                          {%set plugs = doc.id%}
+                          <div class="modal-body">
+                            <div class="card mb-4 shadow-sm">
+                              
+                              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                                <title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                              </svg>
+                              <div class="card-body">
+                                <p class="card-text">{{doc.to_dict()['title']}}</p>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Reward</small>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Submit</button>
-                        </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="hidden" id="index" name="index" value="{{ doc.id }}">
+                            {{acc_ser.submit(class_="btn btn-primary")}}
+                            <!-- <input type="submit" name="submit" value="Accept Job" class="btn btn-primary"> -->
+                          </div>
+                        </form>
+          
                       </div>
                     </div>
                   </div>

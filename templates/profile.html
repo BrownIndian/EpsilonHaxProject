@@ -9,261 +9,300 @@
 {% endblock %}
 
 {% block content %}
-  <body>
-  <header>
-  <div class="container">
-    <div class="row my-2">
-      <div class="col-lg-8 order-lg-2">
-        <ul class="nav nav-tabs">
-          <li class="nav-item navbar-dark">
-            <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
-          </li>
-          <li class="nav-item navbar-dark">
-            <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
-          </li>
-        </ul>
-        <div class="tab-content py-4">
-          <div class="tab-pane active" id="profile">
-              <h5 class="mb-3">{{user_info['uname']}}'s Profile</h5>
-            <div class="row">
-              <div class="col-md-6">
-                <h6>Name</h6>
-                <p>
-                  {{user_info['fname']}} {{user_info['lname']}}
-                </p>
-                <h6>Username</h6>
-                <p>
-                  {{user_info['uname']}}
-                </p>
-                <h6>Email</h6>
-                <p>
-                  {{user_info['email']}}
-                </p>
-                <h6>Payment</h6>
-                <p>
-                  {{user_info['card_type']}}
-                </p>
+<div class="container">
+  <div class="row my-2">
+    <div class="col-lg-7 order-lg-3">
+      <ul class="nav nav-tabs">
+        <li class="nav-item navbar-dark">
+          <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
+        </li>
+        <li class="nav-item navbar-dark">
+          <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
+        </li>
+        <li class="nav-item navbar-dark">
+          <a href="" data-target="#stats" data-toggle="tab" class="nav-link">Stats</a>
+        </li>
+      </ul>
+      <div class="tab-content py-4">
+        <div class="tab-pane active" id="profile">
+          <h5 class="mb-3">{{user_info['uname'] | capitalize }}'s Profile</h5>
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Name</h6>
+              <p>
+                {{user_info['fname']}} {{user_info['lname']}}
+              </p>
+              <h6>Username</h6>
+              <p>
+                {{user_info['uname']}}
+              </p>
+              <h6>Email</h6>
+              <p>
+                {{user_info['email']}}
+              </p>
+              <h6>Payment</h6>
+              <p>
+                {{user_info['card_type']}}
+              </p>
 
-                <h6>Preferences</h6>
-                <p>
-                  {{user_info['preferences']}}
-                </p>
-              </div>
-              <div class="col-md-6">
-                <h6>Address</h6>
-                <p>
-                  {{user_info['address']}}
-                </p>
-                <h6>City</h6>
-                <p>
-                  Fremont
-                </p>
-                <h6>State</h6>
-                <p>
-                  {{user_info['state']}}
-                </p>
-                <h6>Zip</h6>
-                <p>
-                  {{user_info['zipcode']}}
-                </p>
-              </div>
-
-
+              <h6>Preferences</h6>
+              <p>
+                {{', '.join(user_info['preferences']) }}
+              </p>
             </div>
-            <a href="#" class="btn btn-primary my-2" data-toggle="modal" data-target="#preferencesModal">Add Job Preferences</a>
-            <div class="modal fade" id="preferencesModal" tabindex="-1" role="dialog" aria-labelledby="preferencesModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="preferencesModalLabel">Add Job Preferences</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <form action="" method="POST">
-                    <div class="modal-body">
-                      <div class="form-check">
-                        <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"> -->
-                        {{pform.hidden_tag()}}
-                         {{pform.tech(class_="form-check-input")}}
-                        <label class="form-check-label" for="defaultCheck1">
-                          {{pform.tech.label}}
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        {{pform.gardening(class_="form-check-input")}}
-                        <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"> -->
-                        <label class="form-check-label" for="defaultCheck2">
-                          {{pform.gardening.label}}
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck3"> -->
-                        {{pform.cleaning(class_="form-check-input")}}
-                        <label class="form-check-label" for="defaultCheck3">
-                          Cleaning
-                        </label>
-                      </div>
-                      <!-- <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
-                        <label class="form-check-label" for="defaultCheck4">
-                          Default checkbox
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
-                        <label class="form-check-label" for="defaultCheck5">
-                          Default checkbox
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
-                        <label class="form-check-label" for="defaultCheck6">
-                          Default checkbox
-                        </label>
-                      </div> -->
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      {{pform.submit(class_="btn btn-primary")}}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--/row-->
+            <div class="col-md-6">
+              <h6>Address</h6>
+              <p>
+                {{user_info['address']}}
+              </p>
+              <h6>City</h6>
+              <p>
+                Fremont
+              </p>
+              <h6>State</h6>
+              <p>
+                {{user_info['state']}}
+              </p>
+              <h6>Zip</h6>
+              <p>
+                {{user_info['zipcode']}}
+              </p>
             </div>
-                  </form>
-        
 
 
-          <div class="tab-pane" id="edit">
-            <form role="form" method="POST">
-              <!-- <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">First name</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="text" value="John">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Last name</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="text" value="Brown">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Email</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="email" value="johnny822@gmail.com">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Username</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="text" value="johnny822">
-                </div>
-              </div> -->
-              {{form.hidden_tag()}}
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Address</label>
-                <div class="col-lg-9">
-                  {{form.address(class_="form-control", placeholder="1234 Main St")}}
-                  <!-- <input class="form-control" type="text" value="4687 park cmn." placeholder=""> -->
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label"></label>
-                <div class="col-lg-6">
-                  {{form.zipcode(class_="form-control", placeholder="Zip")}}
-                  <!-- <input class="form-control" type="text" value="Fremont" placeholder=""> -->
-                </div>
-                <div class="col-lg-3">
-                  {{form.state(class_="form-control")}}
-                  <!-- <input class="form-control" type="text" value="California" placeholder=""> -->
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Credit Card Info</label>
-                <div class="col-lg-9">
-                  <!-- <input class="form-control" type="text" value="4687 park cmn." placeholder="Credit Card Numbers"> -->
-                  {{form.card_num(class_="form-control", placeholder="Card Number")}}
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Name of Card Holder</label>
-                <div class="col-lg-9">
-                  {{form.card_name(class_="form-control", placeholder="Card Name")}}
-                  <!-- <input class="form-control" type="text" value="" placeholder="Credit Card Numbers"> -->
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label"></label>
-                <div class="col-lg-3">
-                  <!-- <input class="form-control" type="text"  placeholder="Card Type"> -->
-                  {{form.card_type(class_="form-control")}}
-                </div>
-                <div class="col-lg-3">
-                  <!-- <input class="form-control" type="text"  placeholder="Expiration"> -->
-                  {{form.expiration(class_="form-control", placeholder="Expiration")}}
-                </div>
-                <div class="col-lg-3">
-                  <!-- <input class="form-control" type="text"  placeholder="CVV"> -->
-                  {{form.cvv(class_="form-control", placeholder="cvv")}}
-                </div>
-              </div>
-              <!-- <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Address 2</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="text" value="6875 dover cmn." placeholder="">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label"></label>
-                <div class="col-lg-6">
-                  <input class="form-control" type="text" value="Fremont" placeholder="">
-                </div>
-                <div class="col-lg-3">
-                  <input class="form-control" type="text" value="California" placeholder="">
-                </div>
-              </div> -->
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Password</label>
-                <div class="col-lg-9">
-                  <!-- <input class="form-control" type="password" placeholder="password"> -->
-                  {{form.password(class_="form-control")}}
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
-                <div class="col-lg-9">
-                  <!-- <input class="form-control" type="password" value="11111122333"> -->
-                  {{form.confirmpassword(class_="form-control")}}
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <!-- <label class="col-lg-3 col-form-label form-control-label"></label> -->
-                <div class="col-lg-9">
-                  <input type="reset" class="btn btn-secondary" value="Cancel">
-                  {{form.submit(class_="btn btn-primary")}}
-                  <!-- <input type="button" class="btn btn-primary" value="Save Changes"> -->
-                </div>
-              </div>
-            </form>
           </div>
-        </div>
-      </div>
-      <div class="col-lg-4 order-lg-1 text-center">
-        <img src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+          <a href="#" class="btn btn-primary my-2" data-toggle="modal" data-target="#preferencesModal">Add Job Preferences</a>
+          <div class="modal fade" id="preferencesModal" tabindex="-1" role="dialog" aria-labelledby="preferencesModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="preferencesModalLabel">Add Job Preferences</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                <form action="" method="POST">
+                  <div class="form-check">
+                    <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"> -->
+                    {{pform.hidden_tag()}}
+                     {{pform.tech(class_="form-check-input")}}
+                    <label class="form-check-label" for="defaultCheck1">
+                      {{pform.tech.label}}
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    {{pform.gardening(class_="form-check-input")}}
+                    <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"> -->
+                    <label class="form-check-label" for="defaultCheck2">
+                      {{pform.gardening.label}}
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck3"> -->
+                    {{pform.cleaning(class_="form-check-input")}}
+                    <label class="form-check-label" for="defaultCheck3">
+                      Cleaning
+                    </label>
+                  </div>
+                  <!-- <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+                    <label class="form-check-label" for="defaultCheck4">
+                      Default checkbox
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
+                    <label class="form-check-label" for="defaultCheck5">
+                      Default checkbox
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
+                    <label class="form-check-label" for="defaultCheck6">
+                      Default checkbox
+                    </label>
+                  </div> -->
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  {{pform.submit(class_="btn btn-primary")}}
+                </div>
+              </form>
 
-        <label class="custom-file">
-          <input type="file" id="file" class="custom-file-input">
-          <span class="custom-file-control">Change Photo</span>
-        </label>
+              </div>
+            </div>
+          </div>
+          <!--/row-->
+        </div>
+
+
+        <div class="tab-pane" id="edit">
+          <form role="form" method="POST">
+            <!-- <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">First name</label>
+              <div class="col-lg-9">
+                <input class="form-control" type="text" value="John">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Last name</label>
+              <div class="col-lg-9">
+                <input class="form-control" type="text" value="Brown">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Email</label>
+              <div class="col-lg-9">
+                <input class="form-control" type="email" value="johnny822@gmail.com">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Username</label>
+              <div class="col-lg-9">
+                <input class="form-control" type="text" value="johnny822">
+              </div>
+            </div> -->
+            {{form.hidden_tag()}}
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Address</label>
+              <div class="col-lg-9">
+                {{form.address(class_="form-control", placeholder="1234 Main St")}}
+                <!-- <input class="form-control" type="text" value="4687 park cmn." placeholder=""> -->
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label"></label>
+              <div class="col-lg-6">
+                {{form.zipcode(class_="form-control", placeholder="Zip")}}
+                <!-- <input class="form-control" type="text" value="Fremont" placeholder=""> -->
+              </div>
+              <div class="col-lg-3">
+                {{form.state(class_="form-control")}}
+                <!-- <input class="form-control" type="text" value="California" placeholder=""> -->
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Credit Card Info</label>
+              <div class="col-lg-9">
+                <!-- <input class="form-control" type="text" value="4687 park cmn." placeholder="Credit Card Numbers"> -->
+                {{form.card_num(class_="form-control", placeholder="Card Number")}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Name of Card Holder</label>
+              <div class="col-lg-9">
+                {{form.card_name(class_="form-control", placeholder="Card Name")}}
+                <!-- <input class="form-control" type="text" value="" placeholder="Credit Card Numbers"> -->
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label"></label>
+              <div class="col-lg-3">
+                <!-- <input class="form-control" type="text"  placeholder="Card Type"> -->
+                {{form.card_type(class_="form-control")}}
+              </div>
+              <div class="col-lg-3">
+                <!-- <input class="form-control" type="text"  placeholder="Expiration"> -->
+                {{form.expiration(class_="form-control", placeholder="Expiration")}}
+              </div>
+              <div class="col-lg-3">
+                <!-- <input class="form-control" type="text"  placeholder="CVV"> -->
+                {{form.cvv(class_="form-control", placeholder="cvv")}}
+              </div>
+            </div>
+            <!-- <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Address 2</label>
+              <div class="col-lg-9">
+                <input class="form-control" type="text" value="6875 dover cmn." placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label"></label>
+              <div class="col-lg-6">
+                <input class="form-control" type="text" value="Fremont" placeholder="">
+              </div>
+              <div class="col-lg-3">
+                <input class="form-control" type="text" value="California" placeholder="">
+              </div>
+            </div> -->
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Password</label>
+              <div class="col-lg-9">
+                <!-- <input class="form-control" type="password" placeholder="password"> -->
+                {{form.password(class_="form-control")}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
+              <div class="col-lg-9">
+                <!-- <input class="form-control" type="password" value="11111122333"> -->
+                {{form.confirmpassword(class_="form-control")}}
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <!-- <label class="col-lg-3 col-form-label form-control-label"></label> -->
+              <div class="col-lg-9">
+                <input type="reset" class="btn btn-secondary" value="Cancel">
+                {{form.submit(class_="btn btn-primary")}}
+                <!-- <input type="button" class="btn btn-primary" value="Save Changes"> -->
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="tab-pane" id="stats">
+          <h5 class="padh mb-3">{{user_info['uname'] | capitalize }}'s Stats</h5>
+          <div class="row">
+            <div class="pad col-md-6">
+              <h6>Services Completed</h6>
+              <p>
+                8
+              </p>
+              <h6>Services Given</h6>
+              <p>
+                2
+              </p>
+              <h6>Money made</h6>
+              <p>
+                $312
+              </p>
+              <h6>Date joined</h6>
+              <p>
+                6/17/20
+              </p>
+
+              <h6>Preferences</h6>
+              <p>
+                Electronics, Housing
+              </p>
+            </div>
+
+
+
+          </div>
+
+          <!--/row-->
+        </div>
+
+
       </div>
     </div>
+      <div class="col-lg-1 order-lg-2 text-center">
+
+        </div>
+    <div class="col-lg-4 order-lg-1 text-center">
+      <img src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+
+      <label class="custom-file">
+        <input type="file" id="file" class="custom-file-input">
+        <span class="custom-file-control">Change Photo</span>
+      </label>
+    </div>
   </div>
-</body>
+</div>
 
 {% endblock %}
 

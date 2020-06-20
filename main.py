@@ -90,7 +90,17 @@ def signin():
 @app.route('/dashboard')
 def dashboard():
     signout = SignOut()
-    return render_template('dashboard.html', is_logged_in = fb.is_user_loggedIn(), signout_form=signout)
+    user = fb.get_username()
+
+    services_offered = db.collection(u'tasks').where(u'worker', u'==', user).limit(3).stream()
+    services_requested = db.collection(u'tasks').where(u'creator', u'==', user).limit(3).stream()
+    services_completed = db.collection(u'tasks').where(u'finished', u'==', True).limit(3).stream()
+
+    offered_exists = fb.existing_data(u'tasks', u'worker', user)
+    requested_exists = fb.existing_data(u'tasks', u'creator', user)
+    completed_exists = fb.existing_data(u'tasks', u'finished', True)
+    
+    return render_template('dashboard.html', is_logged_in = fb.is_user_loggedIn(), signout_form=signout, offered = services_offered, requested = services_requested, completed = services_completed, o_e = offered_exists, r_e = requested_exists, c_e = completed_exists)
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
@@ -125,13 +135,12 @@ def profile():
                 print(err)
     return render_template('profile.html', user_info=user_info, form=update_form, pform = preferences_form, is_logged_in = fb.is_user_loggedIn(), signout_form=signout)
 
-
 @app.route('/services', methods=['GET', 'POST'])
 def services():
     form = TaskForm()
     acc_ser = AcceptService()
     signout = SignOut()
-    doc_ref = db.collection(u'tasks').stream()
+    doc_ref = db.collection(u'tasks').where(u'accepted', u'==', False).stream()
 
 
     if form.validate_on_submit():
@@ -159,6 +168,7 @@ def services():
                 if not fb.existing_data(u'tasks', u'creator', fb.get_username()):
                     doc_ref.update({
                         u'worker': fb.get_username(),
+                        u'dateAccepted': datetime.datetime.now(),
                         u'accepted':True
                     })
                     return redirect('services')
@@ -175,3 +185,5 @@ def services():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+

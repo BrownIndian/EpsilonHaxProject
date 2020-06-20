@@ -36,7 +36,7 @@ class Fire():
 
     def existing_data(self, collection, check, data):
         item = 0
-        docs = self.db.collection(collection).where(check, u'==', data).stream()
+        docs = self.db.collection(collection).where(check, u'==', data).limit(1).stream()
         for doc in docs : item +=1
         return False if item == 0 else True
 

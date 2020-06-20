@@ -80,3 +80,15 @@ footer p {
 .title {
   background-color: #bae1ff;
 }
+
+
+#msg {
+  text-align: center;
+}
+
+.grop {
+  width: 10%;
+  margin-left: 45%;
+  margin-right: 45%;
+}
+

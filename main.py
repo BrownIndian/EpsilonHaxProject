@@ -73,11 +73,6 @@ def services():
         return redirect(url_for('services'))
     return render_template('services.html', form=form, dox = doc_ref, tool=tool, is_logged_in = fb.is_user_loggedIn(), signout_form=signout)
 
-@app.route('/stats')
-def stats():
-    signout = SignOut()
-    return render_template('stats.html', signout_form=signout)
-
 @app.route('/dashboard')
 def dashboard():
     signout = SignOut()

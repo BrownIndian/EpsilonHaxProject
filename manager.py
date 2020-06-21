@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+from flask import session
 import pyrebase
 
 class Fire():
@@ -40,18 +41,24 @@ class Fire():
         for doc in docs : item +=1
         return False if item == 0 else True
 
-    def is_user_loggedIn(self):
-        return self.pyreauth.current_user != None
+    def is_user_loggedIn(self, uid):
+        if 'uid' in session and uid == session['uid']:
+            return True
+        return False
 
     def get_user_info(self, uname):
         doc = self.db.collection(u'users').document(uname).get()
         return doc.to_dict()
 
     def sign_out_user(self):
+        session.pop('uid', None)
+        session.pop('username', None)
+        session.pop('email', None)
+        session.pop('password', None)
         self.pyreauth.current_user = None
 
-    def get_username(self):
-        return self.db.collection(u'users').document(self.pyreauth.current_user['localId']).get().to_dict()['uname']
+    def get_username(self, id):
+        return self.db.collection(u'users').document(id).get().to_dict()['uname']
 
 
 

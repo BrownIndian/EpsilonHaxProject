@@ -53,6 +53,8 @@ def register():
                     u'expiration': form.expiration.data,
                     u'zipcode': form.zipcode.data,
                     u'cvv': form.cvv.data,
+                    u'money': 0,
+                    u'datejoined': datetime.datetime.now().strftime("%x"),
                     u'preferences': ['None']
                     })
 
@@ -106,6 +108,19 @@ def dashboard():
             confirmed = bool(request.form['confirmdone'])
             doc_ref = db.collection(u'tasks').document(request.form['doc_id'])
             doc_ref.update({u'finished': confirmed})
+
+            service = doc_ref.get().to_dict()
+            worker_uname = service['worker']
+            workers = db.collection(u'users').where(u'uname', u'==', worker_uname).limit(1).stream()
+            worker_id = ''
+            for worker in workers:
+                worker_id = worker.id
+
+            worker_ref = db.collection(u'users').document(worker_id)
+            money = worker_ref.get().to_dict()['money']
+            money+=int(service['reward'])
+            worker_ref.update({u'money': money})
+            
             return redirect(url_for('dashboard'))
 
     services_offered = db.collection(u'tasks').where(u'worker', u'==', user).limit(5).stream()
@@ -123,10 +138,12 @@ def profile():
     update_form = UpdateInfoForm()
     preferences_form = PreferencesForm()
     signout = SignOut()
-    print(f"This is the current user: {auth.current_user}") 
-    user = auth.current_user
+
     user_info = fb.get_user_info(session['uid'])
     doc_ref = db.collection(u'users').document(session['uid'])
+
+    services_requested = fb.service_stats(session['uname'], u'creator')
+    services_done = fb.service_stats(session['uname'], u'creator')
 
     if update_form.validate_on_submit() and update_form.submit.data:
         doc_ref.update(
@@ -149,7 +166,7 @@ def profile():
         for fieldName, errorMessages in update_form.errors.items():
             for err in errorMessages:
                 print(err)
-    return render_template('profile.html', user_info=user_info, form=update_form, pform = preferences_form, signout_form=signout)
+    return render_template('profile.html', user_info=user_info, form=update_form, pform = preferences_form, signout_form=signout, sr = services_requested, sd = services_done)
 
 @app.route('/services', methods=['GET', 'POST'])
 def services():

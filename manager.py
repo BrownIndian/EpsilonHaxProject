@@ -60,6 +60,12 @@ class Fire():
     def get_username(self, id):
         return self.db.collection(u'users').document(id).get().to_dict()['uname']
 
+    def service_stats(self, data, role):
+        item = 0
+        if 'uid' in session:
+            docs = self.db.collection(u'tasks').where(role, u'==', data).stream()
+        for doc in docs : item +=1
+        return item
 
 
     

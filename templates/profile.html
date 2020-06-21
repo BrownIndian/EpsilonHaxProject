@@ -259,24 +259,24 @@
             <div class="pad col-md-6">
               <h6>Services Completed</h6>
               <p>
-                8
+                {{sr}}
               </p>
               <h6>Services Given</h6>
               <p>
-                2
+                {{sd}}
               </p>
               <h6>Money made</h6>
               <p>
-                $312
+                ${{user_info['money']}}
               </p>
               <h6>Date joined</h6>
               <p>
-                6/17/20
+                {{user_info['datejoined']}}
               </p>
 
               <h6>Preferences</h6>
               <p>
-                Electronics, Housing
+                {{", ".join(user_info['preferences'])}}
               </p>
             </div>
 

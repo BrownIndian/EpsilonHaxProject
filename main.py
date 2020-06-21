@@ -16,7 +16,7 @@ def index():
     if request.method == "POST":
         fb.sign_out_user()
         return redirect(url_for('index'))
-    return render_template('index.html', is_logged_in = fb.is_user_loggedIn(), signout_form=signout)
+    return render_template('index.html', signout_form=signout)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -26,7 +26,7 @@ def register():
         session['password'] = form.password.data
         session['uname'] = form.uname.data
 
-        if auth.current_user == None: 
+        if 'uid' not in session: 
             print(fb.existing_data(u'user',u'uname', form.uname.data))
             if fb.existing_data(u'user',u'uname', form.uname.data):
                 print(form.uname.data)
@@ -35,12 +35,11 @@ def register():
                 return render_template('register.html', form=form)
             else:
                 if not fb.existing_data(u'user',u'email', form.email.data):
-                    print(form.email.data)
                     fb.create_user(session['email'],session['password'])
-                    user = auth.current_user
+                    session['uid'] = auth.current_user['localId']
                     flash('Thank you for creating an account with us!')
 
-                    doc_ref = db.collection(u'users').document(user['localId'])
+                    doc_ref = db.collection(u'users').document(session['uid'])
                     doc_ref.set({
                     u'fname': form.fname.data,
                     u'lname': form.lname.data,
@@ -69,7 +68,7 @@ def register():
                 for err in errorMessages:
                     flash(err)
             flash('You have made mistakes within the form, please fix them!')
-    return render_template('register.html', form=form, is_logged_in = fb.is_user_loggedIn())
+    return render_template('register.html', form=form)
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -78,22 +77,24 @@ def signin():
         session['email'] = form.email.data
         session['password'] = form.password.data
 
-        if auth.current_user == None:
+        if 'uid' not in session:
             try:
                 fb.login_user(session['email'],session['password'])
-                print(auth.current_user)
+                session['uid'] = auth.current_user['localId']
+                session['uname'] = fb.get_username(session['uid'])
+
             except requests.exceptions.HTTPError:
                 flash("You have mispelled your email and/or password")
                 return render_template('signin.html', form=form)
             return redirect(url_for('dashboard'))
-    return render_template('signin.html', form=form, is_logged_in = fb.is_user_loggedIn())
+    return render_template('signin.html', form=form)
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     signout = SignOut()
     mark = MarkDone()
     confirm = ConfirmDone()
-    user = fb.get_username()
+    user = fb.get_username(session['uid'])
 
     if confirm.validate_on_submit() or mark.validate_on_submit():
         if 'markasdone' in request.form:
@@ -115,7 +116,7 @@ def dashboard():
     requested_exists = fb.existing_data(u'tasks', u'creator', user)
     completed_exists = fb.existing_data(u'tasks', u'finished', True)
     
-    return render_template('dashboard.html', is_logged_in = fb.is_user_loggedIn(), signout_form=signout, offered = services_offered, requested = services_requested, completed = services_completed, o_e = offered_exists, r_e = requested_exists, c_e = completed_exists, mark=mark, confirm=confirm)
+    return render_template('dashboard.html', signout_form=signout, offered = services_offered, requested = services_requested, completed = services_completed, o_e = offered_exists, r_e = requested_exists, c_e = completed_exists, mark=mark, confirm=confirm)
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
@@ -124,8 +125,8 @@ def profile():
     signout = SignOut()
     print(f"This is the current user: {auth.current_user}") 
     user = auth.current_user
-    user_info = fb.get_user_info(user['localId'])
-    doc_ref = db.collection(u'users').document(user['localId'])
+    user_info = fb.get_user_info(session['uid'])
+    doc_ref = db.collection(u'users').document(session['uid'])
 
     if update_form.validate_on_submit() and update_form.submit.data:
         doc_ref.update(
@@ -148,7 +149,7 @@ def profile():
         for fieldName, errorMessages in update_form.errors.items():
             for err in errorMessages:
                 print(err)
-    return render_template('profile.html', user_info=user_info, form=update_form, pform = preferences_form, is_logged_in = fb.is_user_loggedIn(), signout_form=signout)
+    return render_template('profile.html', user_info=user_info, form=update_form, pform = preferences_form, signout_form=signout)
 
 @app.route('/services', methods=['GET', 'POST'])
 def services():
@@ -161,7 +162,7 @@ def services():
     if form.validate_on_submit():
         doc_ref = db.collection(u'tasks').document()
         doc_ref.set({
-            u'creator': fb.get_username(),
+            u'creator': session['uname'],
             u'worker': '',
             u'finished': False,
             u'dateCreated': datetime.datetime.now(),
@@ -181,9 +182,9 @@ def services():
             doc_ref = db.collection(u'tasks').document(service_id)
             
             if doc_ref.get().exists:
-                if not doc_ref.get().to_dict()['creator'] == fb.get_username():
+                if not doc_ref.get().to_dict()['creator'] == session['uname']:
                     doc_ref.update({
-                        u'worker': fb.get_username(),
+                        u'worker': session['uname'],
                         u'dateAccepted': datetime.datetime.now(),
                         u'accepted':True
                     })
@@ -196,7 +197,7 @@ def services():
         for fieldName, errorMessages in acc_ser.errors.items():
             for err in errorMessages:
                 print(err)
-    return render_template('services.html', form=form, dox = doc_ref, is_logged_in = fb.is_user_loggedIn(), signout_form=signout, acc_ser=acc_ser)
+    return render_template('services.html', form=form, dox = doc_ref, signout_form=signout, acc_ser=acc_ser)
 
 
 if __name__ == '__main__':

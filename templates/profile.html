@@ -11,7 +11,7 @@
 {% block content %}
 <div class="container">
   <div class="row my-2">
-    <div class="col-lg-7 order-lg-3">
+    <div class="col col-lg-7 order-lg-3">
       <ul class="nav nav-tabs">
         <li class="nav-item navbar-dark">
           <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
@@ -25,35 +25,40 @@
       </ul>
       <div class="tab-content py-4">
         <div class="tab-pane active" id="profile">
-          <h5 class="mb-3">{{user_info['uname'] | capitalize }}'s Profile</h5>
+          <h5 class="mb-3">Johnny822's Profile</h5>
+          <hr>
           <div class="row">
             <div class="col-md-6">
               <h6>Name</h6>
               <p>
-                {{user_info['fname']}} {{user_info['lname']}}
+                John Brown
               </p>
               <h6>Username</h6>
               <p>
-                {{user_info['uname']}}
+                Johnny822
               </p>
               <h6>Email</h6>
               <p>
-                {{user_info['email']}}
+                Johnny822@gmail.com
               </p>
               <h6>Payment</h6>
               <p>
-                {{user_info['card_type']}}
+                Papypal
               </p>
 
               <h6>Preferences</h6>
               <p>
-                {{', '.join(user_info['preferences']) }}
+                Electronics, Housing
               </p>
             </div>
             <div class="col-md-6">
               <h6>Address</h6>
               <p>
-                {{user_info['address']}}
+                6463 park cmn.
+              </p>
+              <h6>Address 2</h6>
+              <p>
+                23425 dover cmn.
               </p>
               <h6>City</h6>
               <p>
@@ -61,11 +66,11 @@
               </p>
               <h6>State</h6>
               <p>
-                {{user_info['state']}}
+                California
               </p>
               <h6>Zip</h6>
               <p>
-                {{user_info['zipcode']}}
+                94536
               </p>
             </div>
 
@@ -82,30 +87,25 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                <form action="" method="POST">
                   <div class="form-check">
-                    <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"> -->
-                    {{pform.hidden_tag()}}
-                     {{pform.tech(class_="form-check-input")}}
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                     <label class="form-check-label" for="defaultCheck1">
-                      {{pform.tech.label}}
+                      Electronics
                     </label>
                   </div>
                   <div class="form-check">
-                    {{pform.gardening(class_="form-check-input")}}
-                    <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"> -->
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
                     <label class="form-check-label" for="defaultCheck2">
-                      {{pform.gardening.label}}
+                      House
                     </label>
                   </div>
                   <div class="form-check">
-                    <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck3"> -->
-                    {{pform.cleaning(class_="form-check-input")}}
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
                     <label class="form-check-label" for="defaultCheck3">
-                      Cleaning
+                      Default checkbox
                     </label>
                   </div>
-                  <!-- <div class="form-check">
+                  <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
                     <label class="form-check-label" for="defaultCheck4">
                       Default checkbox
@@ -122,14 +122,12 @@
                     <label class="form-check-label" for="defaultCheck6">
                       Default checkbox
                     </label>
-                  </div> -->
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{pform.submit(class_="btn btn-primary")}}
+                  <button type="button" class="btn btn-primary">Submit</button>
                 </div>
-              </form>
-
               </div>
             </div>
           </div>
@@ -138,8 +136,8 @@
 
 
         <div class="tab-pane" id="edit">
-          <form role="form" method="POST">
-            <!-- <div class="form-group row">
+          <form role="form">
+            <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label">First name</label>
               <div class="col-lg-9">
                 <input class="form-control" type="text" value="John">
@@ -162,57 +160,23 @@
               <div class="col-lg-9">
                 <input class="form-control" type="text" value="johnny822">
               </div>
-            </div> -->
-            {{form.hidden_tag()}}
+            </div>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label">Address</label>
               <div class="col-lg-9">
-                {{form.address(class_="form-control", placeholder="1234 Main St")}}
-                <!-- <input class="form-control" type="text" value="4687 park cmn." placeholder=""> -->
+                <input class="form-control" type="text" value="4687 park cmn." placeholder="">
               </div>
             </div>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label"></label>
               <div class="col-lg-6">
-                {{form.zipcode(class_="form-control", placeholder="Zip")}}
-                <!-- <input class="form-control" type="text" value="Fremont" placeholder=""> -->
+                <input class="form-control" type="text" value="Fremont" placeholder="">
               </div>
               <div class="col-lg-3">
-                {{form.state(class_="form-control")}}
-                <!-- <input class="form-control" type="text" value="California" placeholder=""> -->
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <label class="col-lg-3 col-form-label form-control-label">Credit Card Info</label>
-              <div class="col-lg-9">
-                <!-- <input class="form-control" type="text" value="4687 park cmn." placeholder="Credit Card Numbers"> -->
-                {{form.card_num(class_="form-control", placeholder="Card Number")}}
+                <input class="form-control" type="text" value="California" placeholder="">
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-lg-3 col-form-label form-control-label">Name of Card Holder</label>
-              <div class="col-lg-9">
-                {{form.card_name(class_="form-control", placeholder="Card Name")}}
-                <!-- <input class="form-control" type="text" value="" placeholder="Credit Card Numbers"> -->
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-lg-3 col-form-label form-control-label"></label>
-              <div class="col-lg-3">
-                <!-- <input class="form-control" type="text"  placeholder="Card Type"> -->
-                {{form.card_type(class_="form-control")}}
-              </div>
-              <div class="col-lg-3">
-                <!-- <input class="form-control" type="text"  placeholder="Expiration"> -->
-                {{form.expiration(class_="form-control", placeholder="Expiration")}}
-              </div>
-              <div class="col-lg-3">
-                <!-- <input class="form-control" type="text"  placeholder="CVV"> -->
-                {{form.cvv(class_="form-control", placeholder="cvv")}}
-              </div>
-            </div>
-            <!-- <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label">Address 2</label>
               <div class="col-lg-9">
                 <input class="form-control" type="text" value="6875 dover cmn." placeholder="">
@@ -226,66 +190,65 @@
               <div class="col-lg-3">
                 <input class="form-control" type="text" value="California" placeholder="">
               </div>
-            </div> -->
+            </div>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label">Password</label>
               <div class="col-lg-9">
-                <!-- <input class="form-control" type="password" placeholder="password"> -->
-                {{form.password(class_="form-control")}}
+                <input class="form-control" type="password" value="11111122333">
               </div>
             </div>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
               <div class="col-lg-9">
-                <!-- <input class="form-control" type="password" value="11111122333"> -->
-                {{form.confirmpassword(class_="form-control")}}
+                <input class="form-control" type="password" value="11111122333">
               </div>
             </div>
 
             <div class="form-group row">
-              <!-- <label class="col-lg-3 col-form-label form-control-label"></label> -->
+              <label class="col-lg-3 col-form-label form-control-label"></label>
               <div class="col-lg-9">
                 <input type="reset" class="btn btn-secondary" value="Cancel">
-                {{form.submit(class_="btn btn-primary")}}
-                <!-- <input type="button" class="btn btn-primary" value="Save Changes"> -->
+                <input type="button" class="btn btn-primary" value="Save Changes">
               </div>
             </div>
           </form>
         </div>
 
-        <div class="tab-pane" id="stats">
-          <h5 class="padh mb-3">{{user_info['uname'] | capitalize }}'s Stats</h5>
-          <div class="row">
-            <div class="pad col-md-6">
-              <h6>Services Completed</h6>
-              <p>
-                {{sr}}
-              </p>
-              <h6>Services Given</h6>
-              <p>
-                {{sd}}
-              </p>
-              <h6>Money made</h6>
-              <p>
-                ${{user_info['money']}}
-              </p>
-              <h6>Date joined</h6>
-              <p>
-                {{user_info['datejoined']}}
-              </p>
+            <div class="tab-pane" id="stats">
+              <h5 class="padh mb-3">Johnny822's Stats</h5>
+              <hr>
+              <div class="row">
+                <div class="pad col-md-4">
+                  <h6>Services Completed</h6>
+                  <p>
+                    8
+                  </p>
+                  <h6>Services Given</h6>
+                  <p>
+                    2
+                  </p>
+                  <h6>Money made</h6>
+                  <p>
+                    $312
+                  </p>
+                  <h6>Date joined</h6>
+                  <p>
+                    6/17/20
+                  </p>
 
-              <h6>Preferences</h6>
-              <p>
-                {{", ".join(user_info['preferences'])}}
-              </p>
+                  <h6>Preferences</h6>
+                  <p>
+                    Electronics, Housing
+                  </p>
+                </div>
+                <div class="good col-md-8">
+                  <img src="https://www.rubberstampchamp.com/images/products/smmedprodimgs/teacherround/teacherround-210_medium.png" alt="Good Work">
+                </div>
+
+              </div>
+
+              <!--/row-->
             </div>
-
-
-
-          </div>
-
-          <!--/row-->
-        </div>
 
 
       </div>
@@ -298,12 +261,11 @@
 
       <label class="custom-file">
         <input type="file" id="file" class="custom-file-input">
-        <span class="custom-file-control">Change Photo</span>
+        <button type="button" name="button" class="btn btn-lg btn-primary btn-custom-file-control">Change Photo</button>
       </label>
     </div>
   </div>
 </div>
-
 {% endblock %}
 
 </html>

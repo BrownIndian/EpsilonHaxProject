@@ -25,52 +25,52 @@
       </ul>
       <div class="tab-content py-4">
         <div class="tab-pane active" id="profile">
-          <h5 class="mb-3">Johnny822's Profile</h5>
+          <h5 class="mb-3">{{user_info['uname'] | capitalize}}'s Profile</h5>
           <hr>
           <div class="row">
             <div class="col-md-6">
               <h6>Name</h6>
               <p>
-                John Brown
+                {{user_info['fname']}} {{user_info['lname']}}
               </p>
               <h6>Username</h6>
               <p>
-                Johnny822
+                {{user_info['uname']}}
               </p>
               <h6>Email</h6>
               <p>
-                Johnny822@gmail.com
+                {{user_info['email']}}
               </p>
               <h6>Payment</h6>
               <p>
-                Papypal
+                {{user_info['card_type']}}
               </p>
 
               <h6>Preferences</h6>
               <p>
-                Electronics, Housing
+                {{', '.join(user_info['preferences']) }}
               </p>
             </div>
             <div class="col-md-6">
               <h6>Address</h6>
               <p>
-                6463 park cmn.
+                {{user_info['address']}}
               </p>
-              <h6>Address 2</h6>
+              <!-- <h6>Address 2</h6>
               <p>
                 23425 dover cmn.
-              </p>
+              </p> -->
               <h6>City</h6>
               <p>
                 Fremont
               </p>
               <h6>State</h6>
               <p>
-                California
+                {{user_info['state']}}
               </p>
               <h6>Zip</h6>
               <p>
-                94536
+                {{user_info['zipcode']}}
               </p>
             </div>
 
@@ -87,57 +87,65 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
-                      Electronics
-                    </label>
+                  <form action="" method="POST">
+                    {{pform.hidden_tag()}}
+                    <div class="form-check">
+                      <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"> -->
+                      {{pform.tech(class_="form-check-input")}}
+                      <label class="form-check-label" for="defaultCheck1">{{pform.tech.label}}</label>
+                      
+                    </div>
+                    <div class="form-check">
+                      <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"> -->
+                      {{pform.gardening(class_="form-check-input")}}
+                      <label class="form-check-label" for="defaultCheck1">{{pform.gardening.label}}</label>
+                      
+                    </div>
+                    <div class="form-check">
+                      <!-- <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"> -->
+                      {{pform.cleaning(class_="form-check-input")}}
+                      <label class="form-check-label" for="defaultCheck1">{{pform.cleaning.label}}</label>
+                      
+                    </div>
+                    <!-- <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+                      <label class="form-check-label" for="defaultCheck3">
+                        Default checkbox
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+                      <label class="form-check-label" for="defaultCheck4">
+                        Default checkbox
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
+                      <label class="form-check-label" for="defaultCheck5">
+                        Default checkbox
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
+                      <label class="form-check-label" for="defaultCheck6">
+                        Default checkbox
+                      </label>
+                    </div> -->
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-                    <label class="form-check-label" for="defaultCheck2">
-                      House
-                    </label>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    {{pform.submit(class_="btn btn-primary")}}
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-                    <label class="form-check-label" for="defaultCheck3">
-                      Default checkbox
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
-                    <label class="form-check-label" for="defaultCheck4">
-                      Default checkbox
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
-                    <label class="form-check-label" for="defaultCheck5">
-                      Default checkbox
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
-                    <label class="form-check-label" for="defaultCheck6">
-                      Default checkbox
-                    </label>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Submit</button>
-                </div>
+                  </form>
               </div>
             </div>
           </div>
           <!--/row-->
         </div>
 
-
         <div class="tab-pane" id="edit">
-          <form role="form">
-            <div class="form-group row">
+          <form role="form" method="POST">
+            <!-- <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label">First name</label>
               <div class="col-lg-9">
                 <input class="form-control" type="text" value="John">
@@ -160,23 +168,57 @@
               <div class="col-lg-9">
                 <input class="form-control" type="text" value="johnny822">
               </div>
-            </div>
+            </div> -->
+            {{form.hidden_tag()}}
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label">Address</label>
               <div class="col-lg-9">
-                <input class="form-control" type="text" value="4687 park cmn." placeholder="">
+                {{form.address(class_="form-control", placeholder="1234 Main St")}}
+                <!-- <input class="form-control" type="text" value="4687 park cmn." placeholder=""> -->
               </div>
             </div>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label"></label>
               <div class="col-lg-6">
-                <input class="form-control" type="text" value="Fremont" placeholder="">
+                {{form.zipcode(class_="form-control", placeholder="Zip")}}
+                <!-- <input class="form-control" type="text" value="Fremont" placeholder=""> -->
               </div>
               <div class="col-lg-3">
-                <input class="form-control" type="text" value="California" placeholder="">
+                {{form.state(class_="form-control")}}
+                <!-- <input class="form-control" type="text" value="California" placeholder=""> -->
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Credit Card Info</label>
+              <div class="col-lg-9">
+                <!-- <input class="form-control" type="text" value="4687 park cmn." placeholder="Credit Card Numbers"> -->
+                {{form.card_num(class_="form-control", placeholder="Card Number")}}
               </div>
             </div>
             <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Name of Card Holder</label>
+              <div class="col-lg-9">
+                {{form.card_name(class_="form-control", placeholder="Card Name")}}
+                <!-- <input class="form-control" type="text" value="" placeholder="Credit Card Numbers"> -->
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label"></label>
+              <div class="col-lg-3">
+                <!-- <input class="form-control" type="text"  placeholder="Card Type"> -->
+                {{form.card_type(class_="form-control")}}
+              </div>
+              <div class="col-lg-3">
+                <!-- <input class="form-control" type="text"  placeholder="Expiration"> -->
+                {{form.expiration(class_="form-control", placeholder="Expiration")}}
+              </div>
+              <div class="col-lg-3">
+                <!-- <input class="form-control" type="text"  placeholder="CVV"> -->
+                {{form.cvv(class_="form-control", placeholder="cvv")}}
+              </div>
+            </div>
+            <!-- <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label">Address 2</label>
               <div class="col-lg-9">
                 <input class="form-control" type="text" value="6875 dover cmn." placeholder="">
@@ -190,55 +232,58 @@
               <div class="col-lg-3">
                 <input class="form-control" type="text" value="California" placeholder="">
               </div>
-            </div>
+            </div> -->
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label">Password</label>
               <div class="col-lg-9">
-                <input class="form-control" type="password" value="11111122333">
+                <!-- <input class="form-control" type="password" placeholder="password"> -->
+                {{form.password(class_="form-control")}}
               </div>
             </div>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
               <div class="col-lg-9">
-                <input class="form-control" type="password" value="11111122333">
+                <!-- <input class="form-control" type="password" value="11111122333"> -->
+                {{form.confirmpassword(class_="form-control")}}
               </div>
             </div>
 
             <div class="form-group row">
-              <label class="col-lg-3 col-form-label form-control-label"></label>
+              <!-- <label class="col-lg-3 col-form-label form-control-label"></label> -->
               <div class="col-lg-9">
                 <input type="reset" class="btn btn-secondary" value="Cancel">
-                <input type="button" class="btn btn-primary" value="Save Changes">
+                {{form.submit(class_="btn btn-primary")}}
+                <!-- <input type="button" class="btn btn-primary" value="Save Changes"> -->
               </div>
             </div>
           </form>
         </div>
 
             <div class="tab-pane" id="stats">
-              <h5 class="padh mb-3">Johnny822's Stats</h5>
+              <h5 class="padh mb-3">{{user_info['uname'] | capitalize }}'s Stats</h5>
               <hr>
               <div class="row">
                 <div class="pad col-md-4">
                   <h6>Services Completed</h6>
                   <p>
-                    8
+                    {{sr}}
                   </p>
                   <h6>Services Given</h6>
                   <p>
-                    2
+                    {{sd}}
                   </p>
                   <h6>Money made</h6>
                   <p>
-                    $312
+                    ${{user_info['money']}}
+
                   </p>
                   <h6>Date joined</h6>
                   <p>
-                    6/17/20
+                    {{user_info['datejoined']}}
                   </p>
-
                   <h6>Preferences</h6>
                   <p>
-                    Electronics, Housing
+                    {{", ".join(user_info['preferences'])}}
                   </p>
                 </div>
                 <div class="good col-md-8">

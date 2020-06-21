@@ -36,12 +36,14 @@
     </button>
     </div>
   {% endfor %}
+
   <section class="title jumbotron text-center">
     <div class="container">
-      <h1>Service Hub</h1>
-      <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-      <p>
+      <h1>Services</h1>
+        <br>
+        <br>
         <a href="#" class="btn btn-primary my-2" data-toggle="modal" data-target="#exampleModal">Ask for a Service</a>
+        <a href="#services" class="btn btn-secondary my-2">Find a Service</a>
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -51,29 +53,92 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-
-
-
-
               <div class="modal-body">
                 <form class="form-signin" method="POST">
                   <img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
                   <h1 class="h3 mb-3 font-weight-bold">Service Details</h1>
                   {{form.hidden_tag()}}
-                  {{form.title.label}} {{form.title(class_="form-control")}}
-                  {{form.description.label}} {{form.description(class_="form-control", rows="3")}}
-                  {{form.reward.label}} {{form.reward(class_="form-control")}}
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                   {{form.submit(class_="btn btn-primary")}}
-                  </div>
-                </form>
-              </div>
+                   {{form.title(class_="form-control", placeholder="Name of service")}}
+                   <br>
+                   {{form.description(class_="form-control", rows="3", placeholder="Description")}}
+                   <br>
+                  {{form.address(class_="form-control", placeholder="Address")}}
+                  <br>
+                  
 
+                  <div class="row">
+                    <div class="col-md-4 mb-3">
+                      {{form.city(class_="form-control", placeholder="City")}}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <!-- <label for="category"></label> -->
+                      {{form.state(class_="form-control", placeholder="State")}}
+                      <!-- <select id="inputCategory" placeholder="Choose a category" class="form-control">
+                        <option selected>State</option>
+                        <option>California</option>
+                        <option>New York</option>
+                        <option>Florida</option>
+                        <option>Washington</option>
+                        <option>Texas</option>
+                        <option>Virginia</option>
+                        <option>Oregon</option>
+                        <option>Georgia</option>
+                      </select> -->
+                    </div>
+                    <div class="col-md-4 mb-3">
+                       {{form.zipcode(class_="form-control", placeholder="Zipcode")}}
+                      <!-- <label for="Zipe"></label>
+                      <input type="text" class="form-control" id="Zip" placeholder="Zip" value="" required> -->
+                    </div>
+                  </div>
+
+                  {{form.category(class_="form-control")}}
+                  <br>
+                  <!-- <label for="inputState"></label>
+                  <select id="inputCategory" placeholder="Choose a category" class="form-control">
+                    <option selected>Choose a category</option>
+                    <option>Errands</option>
+                    <option>Delivery</option>
+                    <option>Help Moving</option>
+                    <option>Tutoring</option>
+                    <option>Plumbing</option>
+                    <option>Cleaning</option>
+                    <option>Repairs</option>
+                    <option>Yard Work</option>
+                  </select> -->
+                  
+                  <!-- <label for="exampleFormControlTextarea1"></label>
+                  <input class="form-control" type="number" placeholder="Reward"> -->
+                  {{form.reward(class_="form-control", placeholder="Reward: $")}}
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                {{form.submit(class_="btn btn-primary")}}
+              </div>
+            </form>
             </div>
           </div>
         </div>
-        <a href="#services" class="btn btn-secondary my-2">Find a Service</a>
+
+
+          <br>
+          <p hidden>asdf </p>
+          <br>
+          <p hidden>asdf </p>
+          <br>
+          <form class="form-inline" method="POST">
+            {{search.hidden_tag()}}
+          <div class="col-md-2 mb-3">
+            {{search.search(class_="form-control mr-sm-5", placeholder="Search")}}
+          </div>
+          <div class="col-md-7 mb-3">
+            {{search.category(class_="form-control")}}
+          </div>
+          <div class="col-md-2 mb-3">
+            {{search.submit(class_="exp btn btn-outline-success my-4 my-sm-0")}}
+          </div>
+        </form>
       </p>
     </div>
   </section>
@@ -86,10 +151,12 @@
         {% for doc in dox %}
         <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+            
+            <img src="{{pic.picture[doc.to_dict()['category']]}}" alt="Oops" width="100%" height="100%">
+            <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
               <title>Placeholder</title>
               <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-            </svg>
+            </svg> -->
             <div class="card-body">
               <p class="card-text">{{doc.to_dict()['title']}}</p>
               <p class="card-text">{{doc.to_dict()['description']}}</p>
@@ -111,15 +178,19 @@
                           <div class="modal-body">
                             <div class="card mb-4 shadow-sm">
                               
-                              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                              <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
                                 <title>Placeholder</title>
                                 <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                              </svg>
+                              </svg> -->
+                              
+                              <img src="{{pic.picture[doc.to_dict()['category']]}}" alt="Oops" width="100%" height="100%">
+                              
                               <div class="card-body">
                                 <p class="card-text">{{doc.to_dict()['title']}}</p>
                                 <p class="card-text">{{doc.to_dict()['description']}}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">Reward: ${{doc.to_dict()['reward']}}</small>
+                                <small class="text-muted">Date Created: 6/21/20</small>
                               </div>
                             </div>
                           </div>
@@ -142,33 +213,19 @@
         </div>
       </div>
       {% endfor %}
-
+      </div>
     </div>
   </div>
-  </div>
 
-  
-  <footer class="title text-muted">
-    <div class="container">
-      <p class="float-right">
-        <a href="#">Back to top</a>
-      </p>
-      <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-      <p>New to Bootstrap? <a href="https://getbootstrap.com/">Visit the homepage</a> or read our <a href="../getting-started/introduction/">getting started guide</a>.</p>
-    </div>
-  </footer>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script>
     window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')
   </script>
   <script src="../assets/dist/js/bootstrap.bundle.js"></script>
+
 </main>
+
 {% endblock %}
 <body>
   
-    
-
-
-
-
 </html>

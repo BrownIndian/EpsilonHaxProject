@@ -1,11 +1,12 @@
 from flask import Flask, render_template, session, redirect, request, url_for, flash
-from forms import RegisterForm, LoginForm, TaskForm, PreferencesForm, UpdateInfoForm, SignOut, AcceptService, MarkDone, ConfirmDone
-from manager import Fire
-import requests, uuid, datetime, time
+from forms import RegisterForm, LoginForm, TaskForm, PreferencesForm, UpdateInfoForm, SignOut, AcceptService, MarkDone, ConfirmDone, SearchForm
+from manager import Fire, Picture
+import requests, uuid, datetime
 
 fb = Fire()
 auth = fb.pyreauth
 db = fb.db
+pic = Picture()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "asd2345khkgkjf7saiyd"
@@ -16,7 +17,7 @@ def index():
     if request.method == "POST":
         fb.sign_out_user()
         return redirect(url_for('index'))
-    return render_template('index.html', signout_form=signout)
+    return render_template('index.html', signout_form=signout, pic=pic)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -70,7 +71,7 @@ def register():
                 for err in errorMessages:
                     flash(err)
             flash('You have made mistakes within the form, please fix them!')
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, pic=pic)
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -89,7 +90,7 @@ def signin():
                 flash("You have mispelled your email and/or password")
                 return render_template('signin.html', form=form)
             return redirect(url_for('dashboard'))
-    return render_template('signin.html', form=form)
+    return render_template('signin.html', form=form, pic=pic)
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
@@ -131,7 +132,7 @@ def dashboard():
     requested_exists = fb.existing_data(u'tasks', u'creator', user)
     completed_exists = fb.existing_data(u'tasks', u'finished', True)
     
-    return render_template('dashboard.html', signout_form=signout, offered = services_offered, requested = services_requested, completed = services_completed, o_e = offered_exists, r_e = requested_exists, c_e = completed_exists, mark=mark, confirm=confirm)
+    return render_template('dashboard.html', signout_form=signout, offered = services_offered, requested = services_requested, completed = services_completed, o_e = offered_exists, r_e = requested_exists, c_e = completed_exists, mark=mark, confirm=confirm, pic=pic)
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
@@ -143,7 +144,7 @@ def profile():
     doc_ref = db.collection(u'users').document(session['uid'])
 
     services_requested = fb.service_stats(session['uname'], u'creator')
-    services_done = fb.service_stats(session['uname'], u'creator')
+    services_done = fb.service_stats(session['uname'], u'worker')
 
     if update_form.validate_on_submit() and update_form.submit.data:
         doc_ref.update(
@@ -173,6 +174,7 @@ def services():
     form = TaskForm()
     acc_ser = AcceptService()
     signout = SignOut()
+    search = SearchForm()
     doc_ref = db.collection(u'tasks').where(u'accepted', u'==', False).stream()
 
 
@@ -182,6 +184,8 @@ def services():
             u'creator': session['uname'],
             u'worker': '',
             u'finished': False,
+            u'address': f"{form.address.data}, {form.city.data}, {form.state.data}, {form.zipcode.data}",
+            u'category': form.category.data,
             u'dateCreated': datetime.datetime.now(),
             u'dateFinished': '',
             u'title': form.title.data,
@@ -194,7 +198,7 @@ def services():
 
     elif acc_ser.validate_on_submit():
         
-        if acc_ser.submit.data:
+        if acc_ser.submit.data and 'index' in request.form:
             service_id = request.form['index']
             doc_ref = db.collection(u'tasks').document(service_id)
             
@@ -210,11 +214,46 @@ def services():
                     flash("You cannot do tasks that you have created")
                     
             return redirect('services')
+        else:
+            if search.submit.data:
+
+                if search.search.data != "":
+                    doc_ref = []
+                    services = db.collection(u'tasks').where(u'accepted', u'==', False).stream()
+                    for service in services:
+                        if search.search.data.lower() in service.to_dict()['title'].lower():
+                            doc_ref.append(service)
+                    return render_template('services.html', form=form, dox = doc_ref, signout_form=signout, acc_ser=acc_ser, search=search, pic=pic)
+                    
+                elif search.category.data != None:
+                    doc_ref=[]
+                    services = db.collection(u'tasks').where(u'accepted', u'==', False).stream()
+                    for service in services:
+                        # print(f"s:{search.search.data}, ser: {service.to_dict()['category']}")
+                        if search.category.data == service.to_dict()['category']:
+                            doc_ref.append(service)
+                    return render_template('services.html', form=form, dox = doc_ref, signout_form=signout, acc_ser=acc_ser, search=search, pic=pic)
+
+                else:
+                    return redirect(url_for('services'))
+                # else:
+                #     doc_ref = db.collection(u'tasks').where(u'accepted', u'==', False).stream()
+                #     return render_template('services.html', form=form, dox = doc_ref, signout_form=signout, acc_ser=acc_ser, search=search)
+                # elif search.category.data != None and search.search.data != "":
+                #     print(search.category.data)
+                #     doc_ref=[]
+                #     services = db.collection(u'tasks').where(u'accepted', u'==', False).where(u'category', u'==', search.search.data).stream()
+                #     for service in services:
+                #         if search.search.data.lower() in service.to_dict()['title'].lower():
+                #             doc_ref.append(service)
+                #     return render_template('services.html', form=form, dox = doc_ref, signout_form=signout, acc_ser=acc_ser, search=search)
+
+
     else:
         for fieldName, errorMessages in acc_ser.errors.items():
             for err in errorMessages:
                 print(err)
-    return render_template('services.html', form=form, dox = doc_ref, signout_form=signout, acc_ser=acc_ser)
+    return render_template('services.html', form=form, dox = doc_ref, signout_form=signout, acc_ser=acc_ser, search=search,  pic=pic)
 
 
 if __name__ == '__main__':

@@ -65,3 +65,6 @@ class PreferencesForm(FlaskForm):
 
 class SignOut(FlaskForm):
     submit = SubmitField('Sign Out')
+
+class AcceptService(FlaskForm):
+    submit = SubmitField('Accept Job', id="")

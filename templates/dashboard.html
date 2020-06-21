@@ -117,50 +117,55 @@
 
   <body class="title">
     {% block content %}
+
     <main role="main" class="container">
+
       <div class="my-3 p-3 bg-white rounded shadow-sm">
         <h6 class="border-bottom border-gray pb-2 mb-0">Current Jobs</h6>
+        {% if o_e  %}
+        {% for doc in offered %}
+        {% set service = doc.to_dict()%}
         <div class="media text-muted pt-3">
           <svg class="bd-placeholder-img mr-2 rounded" width="50" height="50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#e83e8c" /><text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text>
           </svg>
           <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="date d-block text-gray-dark"> Assigned by username</strong>
+            <strong class="date d-block text-gray-dark"> Assigned by @{{service['creator']}}</strong>
   
-            <span>Title</span>
-            <span class="date">Reward</span>
+            <span>{{service['title']}}</span>
+            <span class="date"> | Reward: ${{service['reward']}}</span>
   
-            <span class="d-block date">Description</span>
+            <span class="d-block date">{{service['description']}}</span>
   
-  
-            <button type="button" class="date btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#mapModal" style="float: right;">View</button>
+            <button type="button" class="date btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#map{{doc.id}}Modal" style="float: right;">View</button>
             <button type="button" class="pad date btn btn-sm btn-outline-primary" style="float: right;">Mark as Done</button>
-            <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+            <div class="modal fade" id="map{{doc.id}}Modal" tabindex="-1" role="dialog" aria-labelledby="map{{doc.id}}ModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="mapModalLabel">Complete Job</h5>
+                    <h5 class="modal-title" id="map{{doc.id}}ModalLabel">Complete Job</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div class="modal-body">
                     <div class="card mb-4 shadow-sm">
+                      
                       <!--The div elements for the map and message -->
                       <div id="map"></div>
                       <div id="msg"></div>
   
                       <div class="card-body">
-                        <p class="card-text">Title</p>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text">{{service['title']}}</p>
+                        <p class="card-text">{{service['description']}}</p>
                         <div class="d-flex justify-content-between align-items-center">
   
-                          <small class="text-muted">Reward</small>
+                          <small class="text-muted">Reward: ${{service['reward']}}</small>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
   
-                          <small class="text-muted">Date Assigned: 3/4/20</small>
+                          <small class="text-muted">Date Assigned: {{service['date']}}</small>
                         </div>
                       </div>
                     </div>
@@ -176,39 +181,11 @@
   
           </p>
         </div>
-        <div class="media text-muted pt-3">
-          <svg class="bd-placeholder-img mr-2 rounded" width="50" height="50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#e83e8c" /><text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text>
-          </svg>
-          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark">Assigned by username</strong>
-            <span>Title</span>
-            <span class="date">Reward</span>
-  
-            <span class="d-block date">Description</span>
-  
-            <button type="button" class="date btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#mapModal" style="float: right;">View</button>
-            <button type="button" class="pad date btn btn-sm btn-outline-primary" style="float: right;">Mark as Done</button>
-  
-          </p>
-        </div>
-        <div class="media text-muted pt-3">
-          <svg class="bd-placeholder-img mr-2 rounded" width="50" height="50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#e83e8c" /><text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text>
-          </svg>
-          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark">Assigned by username</strong>
-            <span>Title</span>
-            <span class="date">Reward</span>
-  
-            <span class="d-block date">Description</span>
-  
-            <button type="button" class="date btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#mapModal" style="float: right;">View</button>
-                      <button type="button" class="pad date btn btn-sm btn-outline-primary"  style="float: right;">Mark as Done</button>
-          </p>
-        </div>
+        {% endfor %}
+        {% else %}
+          <strong>Sorry, you have not offered any services yet...</strong>
+                    <!-- make look better -->
+        {% endif %}
         <small class="d-block text-right mt-3">
           <a href="#">All updates</a>
         </small>
@@ -216,39 +193,42 @@
   
       <div class="my-3 p-3 bg-white rounded shadow-sm">
         <h6 class="border-bottom border-gray pb-2 mb-0">Current Job Requests</h6>
+        {% if r_e  %}
+        {% for doc in requested %}
+        {% set service = doc.to_dict()%}
         <div class="media text-muted pt-3">
           <svg class="bd-placeholder-img mr-2 rounded" width="50" height="50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#6f42c1" /><text x="50%" y="50%" fill="#6f42c1" dy=".3em">32x32</text>
           </svg>
           <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark">Accepted or not by username</strong>
-            <span>Title</span>
-            <span class="date">Reward</span>
+            <strong class="d-block text-gray-dark">Accepted by {{service['worker']}}</strong>
+            <span>{{service['title']}}</span>
+            <span class="date">Reward: ${{service['reward']}}</span>
   
-            <span class="d-block date">Description</span>
+            <span class="d-block date">{{service['description']}}</span>
   
-            <button type="button" class="date btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#jobModal" style="float: right;">View</button>
+            <button type="button" class="date btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#job{{doc.id}}Modal" style="float: right;">View</button>
             <button type="button" class="pad date btn btn-sm btn-outline-primary"style="float: right;">Confirm as Done</button>
-            <div class="modal fade" id="jobModal" tabindex="-1" role="dialog" aria-labelledby="jobModalLabel" aria-hidden="true">
+            <div class="modal fade" id="job{{doc.id}}Modal" tabindex="-1" role="dialog" aria-labelledby="job{{doc.id}}ModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="jobModalLabel">Comfirm Job</h5>
+                    <h5 class="modal-title" id="job{{doc.id}}ModalLabel">Confirm Job</h5>
                   </div>
                   <div class="modal-body">
                     <div class="card mb-4 shadow-sm">
   
                       <div class="card-body">
-                        <p class="card-text">Title</p>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text">{{service['title']}}</p>
+                        <p class="card-text">{{service['description']}}</p>
                         <div class="d-flex justify-content-between align-items-center">
   
-                          <small class="text-muted">Reward</small>
+                          <small class="text-muted">Reward: ${{service['reward']}}</small>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
   
-                          <small class="text-muted">Date Assigned: 3/4/20</small>
+                          <small class="text-muted">Date Assigned: {{service['date']}}</small>
                         </div>
                       </div>
                     </div>
@@ -262,38 +242,11 @@
             </div>
           </p>
         </div>
-        <div class="media text-muted pt-3">
-          <svg class="bd-placeholder-img mr-2 rounded" width="50" height="50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#6f42c1" /><text x="50%" y="50%" fill="#6f42c1" dy=".3em">32x32</text>
-          </svg>
-          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark">Accepted or not by username</strong>
-            <span>Title</span>
-            <span class="date">Reward</span>
-  
-            <span class="d-block date">Description</span>
-  
-            <button type="button" class="date btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#jobModal" style="float: right;">View</button>
-                      <button type="button" class="pad date btn btn-sm btn-outline-primary" style="float: right;">Confirm as Done</button>
-          </p>
-        </div>
-        <div class="media text-muted pt-3">
-          <svg class="bd-placeholder-img mr-2 rounded" width="50" height="50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#6f42c1" /><text x="50%" y="50%" fill="#6f42c1" dy=".3em">32x32</text>
-          </svg>
-          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark">Accepted or not by username</strong>
-            <span>Title</span>
-            <span class="date">Reward</span>
-  
-            <span class="d-block date">Description</span>
-  
-            <button type="button" class="date btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#jobModal" style="float: right;">View</button>
-                      <button type="button" class="pad date btn btn-sm btn-outline-primary" style="float: right;">Confirm as Done</button>
-          </p>
-        </div>
+        {% endfor %}
+        {% else %}
+          <strong>Sorry, you have not offered any services yet...</strong>
+          <!-- make look better -->
+        {% endif %}
         <small class="d-block text-right mt-3">
           <a href="#">All updates</a>
         </small>
@@ -301,6 +254,8 @@
   
       <div class="my-3 p-3 bg-white rounded shadow-sm">
         <h6 class="border-bottom border-gray pb-2 mb-0">History</h6>
+        {% if  c_e  %}
+        {% for doc in completed %}
         <div class="media text-muted pt-3">
           <svg class="bd-placeholder-img mr-2 rounded" width="50" height="50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
             <title>Placeholder</title>
@@ -314,32 +269,11 @@
             <span class="d-block">@username</span>
           </div>
         </div>
-        <div class="media text-muted pt-3">
-          <svg class="bd-placeholder-img mr-2 rounded" width="50" height="50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#007bff" /><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
-          </svg>
-          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <div class="d-flex justify-content-between align-items-center w-100">
-              <strong class="text-gray-dark">Full Name</strong>
-              <a href="#">Follow</a>
-            </div>
-            <span class="d-block">@username</span>
-          </div>
-        </div>
-        <div class="media text-muted pt-3">
-          <svg class="bd-placeholder-img mr-2 rounded" width="50" height="50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#007bff" /><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
-          </svg>
-          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <div class="d-flex justify-content-between align-items-center w-100">
-              <strong class="text-gray-dark">Full Name</strong>
-              <a href="#">Follow</a>
-            </div>
-            <span class="d-block">@username</span>
-          </div>
-        </div>
+        {% endfor %}
+        {% else %}
+          <strong>Sorry, you have not completed any services yet...</strong>
+        {% endif %}
+        
         <small class="d-block text-right mt-3">
           <a href="#">All suggestions</a>
         </small>

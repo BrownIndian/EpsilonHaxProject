@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session, redirect, request, url_for, flash
-from forms import RegisterForm, LoginForm, TaskForm, PreferencesForm, UpdateInfoForm, SignOut, AcceptService
+from forms import RegisterForm, LoginForm, TaskForm, PreferencesForm, UpdateInfoForm, SignOut, AcceptService, MarkDone, ConfirmDone
 from manager import Fire
 import requests, uuid, datetime, time
 
@@ -81,26 +81,41 @@ def signin():
         if auth.current_user == None:
             try:
                 fb.login_user(session['email'],session['password'])
+                print(auth.current_user)
             except requests.exceptions.HTTPError:
                 flash("You have mispelled your email and/or password")
                 return render_template('signin.html', form=form)
             return redirect(url_for('dashboard'))
     return render_template('signin.html', form=form, is_logged_in = fb.is_user_loggedIn())
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     signout = SignOut()
+    mark = MarkDone()
+    confirm = ConfirmDone()
     user = fb.get_username()
 
-    services_offered = db.collection(u'tasks').where(u'worker', u'==', user).limit(3).stream()
-    services_requested = db.collection(u'tasks').where(u'creator', u'==', user).limit(3).stream()
-    services_completed = db.collection(u'tasks').where(u'finished', u'==', True).limit(3).stream()
+    if confirm.validate_on_submit() or mark.validate_on_submit():
+        if 'markasdone' in request.form:
+            marked = bool(request.form['markasdone'])
+            doc_ref = db.collection(u'tasks').document(request.form['mdoc_id'])
+            doc_ref.update({u'wfinished': marked})
+            return redirect(url_for('dashboard'))
+        elif 'confirmdone' in request.form:
+            confirmed = bool(request.form['confirmdone'])
+            doc_ref = db.collection(u'tasks').document(request.form['doc_id'])
+            doc_ref.update({u'finished': confirmed})
+            return redirect(url_for('dashboard'))
+
+    services_offered = db.collection(u'tasks').where(u'worker', u'==', user).limit(5).stream()
+    services_requested = db.collection(u'tasks').where(u'creator', u'==', user).limit(5).stream()
+    services_completed = db.collection(u'tasks').where(u'finished', u'==', True).limit(5).stream()
 
     offered_exists = fb.existing_data(u'tasks', u'worker', user)
     requested_exists = fb.existing_data(u'tasks', u'creator', user)
     completed_exists = fb.existing_data(u'tasks', u'finished', True)
     
-    return render_template('dashboard.html', is_logged_in = fb.is_user_loggedIn(), signout_form=signout, offered = services_offered, requested = services_requested, completed = services_completed, o_e = offered_exists, r_e = requested_exists, c_e = completed_exists)
+    return render_template('dashboard.html', is_logged_in = fb.is_user_loggedIn(), signout_form=signout, offered = services_offered, requested = services_requested, completed = services_completed, o_e = offered_exists, r_e = requested_exists, c_e = completed_exists, mark=mark, confirm=confirm)
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
@@ -154,7 +169,8 @@ def services():
             u'title': form.title.data,
             u'description': form.description.data,
             u'reward': form.reward.data,
-            u'accepted': False
+            u'accepted': False,
+            u'wfinished': False
         })
         return redirect(url_for('services'))
 
@@ -165,7 +181,7 @@ def services():
             doc_ref = db.collection(u'tasks').document(service_id)
             
             if doc_ref.get().exists:
-                if not fb.existing_data(u'tasks', u'creator', fb.get_username()):
+                if not doc_ref.get().to_dict()['creator'] == fb.get_username():
                     doc_ref.update({
                         u'worker': fb.get_username(),
                         u'dateAccepted': datetime.datetime.now(),

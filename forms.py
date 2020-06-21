@@ -67,4 +67,10 @@ class SignOut(FlaskForm):
     submit = SubmitField('Sign Out')
 
 class AcceptService(FlaskForm):
-    submit = SubmitField('Accept Job', id="")
+    submit = SubmitField('Accept Job')
+
+class MarkDone(FlaskForm):
+    submit = SubmitField('Mark as Done', render_kw={'style': "float: right;"}, id="mark")
+
+class ConfirmDone(FlaskForm):
+    submit = SubmitField('Confirm as Done', render_kw={'style': "float: right;"}, id="confirm")
